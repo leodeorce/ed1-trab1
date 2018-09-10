@@ -10,7 +10,7 @@ typedef struct celRot CelRot;
 typedef struct lsRot LsRot;
 
 /*Insere um roteador na lista de roteadores do NetMap na ultima posicao
-* inputs: ponteiro para o tipo Roteador
+* inputs: nome do roteador e da operadora
 * output: nenhum
 * pre-condicao: roteador existe
 * pos-condicao: roteador inserido no netmap 
@@ -40,5 +40,13 @@ void ConectaRoteadores (char* nomeRot1, char* nomeRot2);
 * pos-condicao: roteador1 removido da lista de roteadores do roteador2 e vice-versa
 */
 void DesconectaRoteadores (char* nomeRot1, char* nomeRot2);
+
+/*Conta quantos roteadores são da operadora de entrada
+* inputs: a string que contenha o nome da operadora
+* output: quantidade de roteadores da operadora
+* pre-condicao: 
+* pos-condicao: 
+*/
+int FrequenciaOperadora (char* operadora);
 
 #endif /* ROTEADOR_H_ */
