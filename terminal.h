@@ -1,3 +1,5 @@
+#ifndef TERMINAL_H_
+#define TERMINAL_H_
 //Tipo do terminal (sugiro uma estrutura com nome, localizacao e roteador)
 typedef struct terminal Terminal;
 
@@ -8,42 +10,43 @@ typedef struct celTerm CelTerm;
 typedef struct lsterm LsTerm;
 
 /*Insere um terminal na lista de terminais do NetMap na ultima posicao
-* inputs: ponteiro para o tipo Terminal
+* inputs: nome do terminal e localizacao
 * output: nenhum
 * pre-condicao: terminal existe
 * pos-condicao: terminal inserido no netmap 
 */
-void CadastraTerminal (Terminal* term);
+void CadastraTerminal (char* nomeTerm, char* localizacao);
 
 /*Conecta um terminal a um roteador
-* inputs: ponteiro para o tipo Terminal e para o tipo Roteador
+* inputs: nome do terminal e do roteador
 * output: nenhum
 * pre-condicao: terminal e roteador existem
 * pos-condicao: terminal conectado no roteador
 */
-void ConectaTerminal (Terminal* term, Roteador* rot);
+void ConectaTerminal (char* nomeTerm, char* nomeRot);
 
 /*Desconecta um terminal de um roteador
-* inputs: ponteiro para o tipo Terminal
+* inputs: nome do terminal
 * output: nenhum
 * pre-condicao: terminal existe e esta conectado a algum roteador
 * pos-condicao: terminal desconectado do roteador
 */
-void DesconectaTerminal (Terminal* term);
+void DesconectaTerminal (char* nomeTerm);
 
 /*Remove um terminal da lista de terminais do netmap
-* inputs: ponteiro para o tipo Terminal
+* inputs: nome do terminal
 * output: nenhum
 * pre-condicao: terminal existe
 * pos-condicao: terminal removido do netmap
 */
-void RemoveTerminal (Terminal* term);
+void RemoveTerminal (char* nomeTerm);
 
 /*Verifica se e possivel enviar dados para outro terminal
-* inputs: ponteiro para dois tipos Terminal
+* inputs: nome do terminal origem e destino, respectivamente
 * output: SIM se for possivel e NAO, caso contrario
 * pre-condicao: terminais existem
-* pos-condicao: terminais n„o sao modificados e foram feitas as verificacoes
+* pos-condicao: terminais n√£o sao modificados e foram feitas as verificacoes
 */
-char* EnviarPacoteDados (Terminal* term1, Terminal* term2);
+char* EnviarPacoteDados (char* nomeTerm1, char* nomeTerm2);
 
+#endif /* TERMINAL_H_ */
