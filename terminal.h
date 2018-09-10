@@ -49,4 +49,12 @@ void RemoveTerminal (char* nomeTerm);
 */
 char* EnviarPacoteDados (char* nomeTerm1, char* nomeTerm2);
 
+/*Conta quantos terminais estão na localizacao de entrada
+* inputs: a string que contenha uma localizacao
+* output: quantidade de terminais naquela regiao
+* pre-condicao: nenhum
+* pos-condicao: nenhum
+*/
+int FrequenciaTerminal (char* localizacao);
+
 #endif /* TERMINAL_H_ */
