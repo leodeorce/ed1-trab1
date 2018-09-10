@@ -1,3 +1,5 @@
+#ifndef ROTEADOR_H_
+#define ROTEADOR_H_
 //Tipo do roteador, um item da celula (deve conter nome, operadora e ponteiro pra lista de roteadores na qual se conecta)
 typedef struct roteador Roteador;
 
@@ -5,7 +7,7 @@ typedef struct roteador Roteador;
 typedef struct celRot CelRot;
 
 //Tipo da lista de roteadores; (sugiro com sentinela pro retorno da maioria das funcoes ser void);
-typedef struct lsRot lsRot;
+typedef struct lsRot LsRot;
 
 /*Insere um roteador na lista de roteadores do NetMap na ultima posicao
 * inputs: ponteiro para o tipo Roteador
@@ -13,28 +15,30 @@ typedef struct lsRot lsRot;
 * pre-condicao: roteador existe
 * pos-condicao: roteador inserido no netmap 
 */
-void CadastraRoteador (Roteador* rot);
+void CadastraRoteador (char* nomeRot, char* operadora);
 
 /*Remove um roteador na lista de roteadores do NetMap
-* inputs: ponteiro para o tipo Roteador
+* inputs: nome do roteador
 * output: nenhum
 * pre-condicao: roteador existe
 * pos-condicao: roteador removido do netmap 
 */
-void RemoveRoteador (Roteador* rot);
+void RemoveRoteador (char* nomeRot);
 
 /*Conecta um roteador ao outro
-* inputs: ponteiro para 2 tipos roteador
+* inputs: nome dos roteadores
 * output: nenhum
 * pre-condicao: roteadores de entrada existem
 * pos-condicao: roteador1 inserido na lista de roteadores do roteador2 e vice-versa
 */
-void ConectaRoteadores (Roteador* rot1, Roteador* rot2);
+void ConectaRoteadores (char* nomeRot1, char* nomeRot2);
 
 /*Desconecta um roteador do outro
-* inputs: ponteiro para os 2 tipos roteador
+* inputs: nome dos roteadores
 * output: nenhum
 * pre-condicao: roteadores de entrada existem e estao conectados
 * pos-condicao: roteador1 removido da lista de roteadores do roteador2 e vice-versa
 */
-void DesconectaRoteadores (Roteador* rot1, Roteador* rot2);
+void DesconectaRoteadores (char* nomeRot1, char* nomeRot2);
+
+#endif /* ROTEADOR_H_ */
