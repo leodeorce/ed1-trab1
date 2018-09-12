@@ -15,7 +15,7 @@ typedef struct lsRot LsRot;
 * pre-condicao: roteador existe
 * pos-condicao: roteador inserido no netmap 
 */
-void CadastraRoteador (char* nomeRot, char* operadora);
+void CadastraRoteador (char* rot, char* operadora, LsRot* listaRot);
 
 /*Remove um roteador na lista de roteadores do NetMap
 * inputs: nome do roteador
@@ -44,9 +44,25 @@ void DesconectaRoteadores (char* nomeRot1, char* nomeRot2);
 /*Conta quantos roteadores são da operadora de entrada
 * inputs: a string que contenha o nome da operadora
 * output: quantidade de roteadores da operadora
-* pre-condicao: 
-* pos-condicao: 
+* pre-condicao: nenhum
+* pos-condicao: nenhum
 */
 int FrequenciaOperadora (char* operadora);
+
+/*Inicializa um tipo Roteador
+* inputs: a string que contenha o nome do roteador e da operadora
+* output: ponteiro para o roteador inicializado
+* pre-condicao: nenhum
+* pos-condicao: roteador existe e seus componentes foram inicializados
+*/
+Roteador* criaRoteador(char* rot, char* operadora);
+
+/*Inicializa uma lista de Roteadores
+* inputs: nenhum
+* output: ponteiro para a lista
+* pre-condicao: nenhum
+* pos-condicao: lista existe
+*/
+LsRot* InicializaListaRot();
 
 #endif /* ROTEADOR_H_ */
