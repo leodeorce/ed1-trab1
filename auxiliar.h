@@ -35,23 +35,15 @@ void EscreveSaida (char* nomeComando, char* nome1, char* nome2, int valor);
 
 /*Encontra celula de roteador presente na lista de roteadores
 * inputs: nome do roteador e lista de roteadores
-* output: celula da lista de roteadores contendo ponteiro para item roteador ou NULL caso n„o ache
+* output: celula da lista de roteadores contendo ponteiro para item roteador ou NULL caso n√£o ache
 * pre-condicao: lista iniciliazada
 * pos-condicao: nenhuma
 */
 CelRot* BuscaRoteador (char* nomeRot, LsRot* listaRot);
 
-/*Encontra celula de roteador presente na lista de enlaces de outro roteador
-* inputs: nome do roteador a retornar e lista de enlaces
-* output: celula da lista de enlaces contendo ponteiro para item roteador ou NULL caso n„o ache
-* pre-condicao: lista iniciliazada
-* pos-condicao: nenhuma
-*/
-CelRot* BuscaEnlaces (char* nomeRot, LsRot* enlacesRot);
-
 /*Encontra terminal presente na lista de terminais
 * inputs: nome do terminal e lista de terminais
-* output: celula da lista de terminais contendo ponteiro para item terminal ou NULL caso n„o ache
+* output: celula da lista de terminais contendo ponteiro para item terminal ou NULL caso n√£o ache
 * pre-condicao: lista iniciliazada
 * pos-condicao: nenhuma
 */
