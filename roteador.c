@@ -105,6 +105,19 @@ void DesconectaRoteadores (char* nomeRot1, char* nomeRot2, LsRot* listaRot){
 	free(celRC);
 }
 
+int FrequenciaOperadora (char* operadora, LsRot* listaRot){
+	int qtdRot = 0;
+	CelRot* p = listaRot->prim;
+	
+	while (p != NULL){
+		if(strcmp(p->rot->operadora, operadora) == 0){
+			qtdRot++;
+		}
+		p = p->prox;
+	}
+	return qtdRot;
+}
+
 LsRot* InicializaListaRot(){                    
 	LsRot* listaRt = (LsRot*) malloc(sizeof(LsRot));
 	listaRt->prim = NULL;
