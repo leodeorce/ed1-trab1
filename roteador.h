@@ -49,20 +49,11 @@ void DesconectaRoteadores (char* nomeRot1, char* nomeRot2);
 */
 int FrequenciaOperadora (char* operadora);
 
-/*Inicializa um tipo Roteador
-* inputs: a string que contenha o nome do roteador e da operadora
-* output: ponteiro para o roteador inicializado
-* pre-condicao: nenhum
-* pos-condicao: roteador existe e seus componentes foram inicializados
-*/
-Roteador* criaRoteador(char* rot, char* operadora);
-
-/*Inicializa uma lista de Roteadores
-* inputs: nenhum
-* output: ponteiro para a lista
-* pre-condicao: nenhum
-* pos-condicao: lista existe
-*/
 LsRot* InicializaListaRot();
+static Roteador* criaRoteador(char* rot, char* operadora);
+static CelRot* BuscaRoteador (char* nomeRot, LsRot* listaRot);
+static void DesencadeiaRoteador(CelRot* p, LsRot* listaRot);
+static void LiberaListaRot(LsRot* lsRot);
+static void LiberaTipoRoteador(Roteador* rot);
 
 #endif /* ROTEADOR_H_ */
