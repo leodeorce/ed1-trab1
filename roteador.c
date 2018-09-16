@@ -32,17 +32,24 @@ void CadastraRoteador (char* rot, char* operadora, LsRot* listaRot){
 
 void RemoveRoteador (char* nomeRot, LsRot* listaRot){
 	CelRot* p = BuscaRoteador(nomeRot, listaRot);
+	
+	if(p == NULL){
+		//IMPRIME MENSAGEM DE ERRO
+		return;
+	}
+	
 	CelRot* pConec;
 	
 	CelRot* prc = p->rot->rotConectados->prim;
 	
 	while(prc != NULL){
 		pConec = BuscaRoteador(nomeRot, prc->rot->rotConectados);
-		DesencadeiaRoteador(pConec, prc->rot->rotConectados);   //Desencadeia da lista de roteadores conectados os quais faz parte
+		DesencadeiaRoteador(pConec, prc->rot->rotConectados); //Desencadeia da lista de roteadores conectados os quais faz parte
+		free(pConec);
 		prc = prc->prox;
 	}
-	
-	DesencadeiaRoteador(p, listaRot);
+
+	DesencadeiaRoteador(p, listaRot);    //Desencadeia da lista de roteadores do netmap
 	LiberaTipoRoteador(p->rot);
 	free(p);
 	
@@ -50,8 +57,17 @@ void RemoveRoteador (char* nomeRot, LsRot* listaRot){
 
 void ConectaRoteadores (char* nomeRot1, char* nomeRot2, LsRot* listaRot){
 	CelRot* c = BuscaRoteador(nomeRot1, listaRot);
+	if(c == NULL){
+		//IMPRIME MENSAGEM DE ERRO
+		return;
+	}
 	Roteador* r1 = c->rot;
+	
 	c = BuscaRoteador(nomeRot2, listaRot);
+	if(c == NULL){
+		//IMPRIME MENSAGEM DE ERRO
+		return;
+	}
 	Roteador* r2 = c->rot;
 	
 	CelRot* c1 = (CelRot*) malloc(sizeof(CelRot));
@@ -62,6 +78,31 @@ void ConectaRoteadores (char* nomeRot1, char* nomeRot2, LsRot* listaRot){
 	EncadeiaRoteador(c2, c1->rot->rotConectados);
 	EncadeiaRoteador(c1, c2->rot->rotConectados);
 	
+}
+
+void DesconectaRoteadores (char* nomeRot1, char* nomeRot2, LsRot* listaRot){
+	CelRot* celNP1 = BuscaRoteador(nomeRot1, listaRot);  //Encontra os roteadores no netmap
+	if(celNP1 == NULL){
+		//IMPRIME MENSAGEM DE ERRO
+		return;
+	}
+	CelRot* celNP2 = BuscaRoteador(nomeRot2, listaRot);
+	if(celNP2 == NULL){
+		//IMPRIME MENSAGEM DE ERRO
+		return;
+	}
+	
+	CelRot* celRC = BuscaRoteador(nomeRot2, celNP1->rot->rotConectados); //Encontra o roteador 2 na lista de roteadores conectados do roteador 1
+	if(celRC == NULL){
+		//IMPRIME MENSAGEM DE ERRO
+		return;
+	}
+	DesencadeiaRoteador(celRC, celNP1->rot->rotConectados);
+	free(celRC);
+
+	celRC = BuscaRoteador(nomeRot1, celNP2->rot->rotConectados); //Encontra o roteador 1 na lista de roteadores conectados do roteador 2
+	DesencadeiaRoteador(celRC, celNP2->rot->rotConectados);
+	free(celRC);
 }
 
 LsRot* InicializaListaRot(){                    
