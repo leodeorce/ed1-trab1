@@ -26,39 +26,41 @@ void CadastraRoteador (char* rot, char* operadora, LsRot* listaRot){
 	Roteador* r = criaRoteador(rot, operadora);
 	CelRot* celR = (CelRot*) malloc(sizeof(CelRot));
 	celR->rot = r;
-	celR->prox = NULL;
 	
-	if(listaRot->prim == NULL){
-		listaRot->prim = celR;
-		listaRot->ult = celR;
-		
-		celR->ant = NULL;
-	}else{
-		listaRot->ult->prox = celR;
-		celR->ant = listaRot->ult;
-		listaRot->ult = celR;
-		
-	}
+	EncadeiaRoteador(celR, listaRot);
 };
 
 void RemoveRoteador (char* nomeRot, LsRot* listaRot){
 	CelRot* p = BuscaRoteador(nomeRot, listaRot);
-	
-	DesencadeiaRoteador(p, listaRot);         //Desencadeia da lista de roteadores do netmap
+	CelRot* pConec;
 	
 	CelRot* prc = p->rot->rotConectados->prim;
 	
-	while(prc!=NULL){
-		DesencadeiaRoteador(p, prc->rot->rotConectados); //Desencadeia da lista de roteadores conectados os quais faz parte
+	while(prc != NULL){
+		pConec = BuscaRoteador(nomeRot, prc->rot->rotConectados);
+		DesencadeiaRoteador(pConec, prc->rot->rotConectados);   //Desencadeia da lista de roteadores conectados os quais faz parte
 		prc = prc->prox;
 	}
 	
+	DesencadeiaRoteador(p, listaRot);
 	LiberaTipoRoteador(p->rot);
 	free(p);
 	
 }
 
-void ConectaRoteadores (char* nomeRot1, char* nomeRot2){
+void ConectaRoteadores (char* nomeRot1, char* nomeRot2, LsRot* listaRot){
+	CelRot* c = BuscaRoteador(nomeRot1, listaRot);
+	Roteador* r1 = c->rot;
+	c = BuscaRoteador(nomeRot2, listaRot);
+	Roteador* r2 = c->rot;
+	
+	CelRot* c1 = (CelRot*) malloc(sizeof(CelRot));
+	c1->rot = r1;
+	CelRot* c2 = (CelRot*) malloc(sizeof(CelRot));
+	c2->rot = r2;
+	
+	EncadeiaRoteador(c2, c1->rot->rotConectados);
+	EncadeiaRoteador(c1, c2->rot->rotConectados);
 	
 }
 
@@ -95,7 +97,24 @@ static CelRot* BuscaRoteador (char* nomeRot, LsRot* listaRot){
 	return p;
 }
 
+static void EncadeiaRoteador(CelRot* celR, LsRot* listaRot){
+	celR->prox = NULL;
+	
+	if(listaRot->prim == NULL){
+		listaRot->prim = celR;
+		listaRot->ult = celR;
+			
+		celR->prox = NULL;
+		celR->ant = NULL;
+	}else{
+		listaRot->ult->prox = celR;
+		celR->ant = listaRot->ult;
+		listaRot->ult = celR;		
+	}
+}
+
 static void DesencadeiaRoteador(CelRot* p, LsRot* listaRot){
+	
 	if(p == NULL){
 		//IMPRIMIR MENSAGEM DE ERRO AQUI
 		return;
@@ -106,15 +125,18 @@ static void DesencadeiaRoteador(CelRot* p, LsRot* listaRot){
 		return;
 	}
 	if(p == listaRot->prim){
-		listaRot->prim = listaRot->prim->prox;
-		listaRot->prim->ant = NULL;
+		listaRot->prim = p->prox;
+		p->prox->ant = NULL;
+		return;
 	}
 	if(p == listaRot->ult){
-		listaRot->ult = listaRot->ult->ant;
-		listaRot->ult->prox = NULL;
+		listaRot->ult = p->ant;
+		p->ant->prox = NULL;
+		return;
 	}else{
 		p->ant->prox = p->prox;
 		p->prox->ant = p->ant;
+		return;
 	}
 }
 
@@ -123,11 +145,13 @@ static void LiberaListaRot(LsRot* lsRot){
 	CelRot* k;
 	
 	while(p != NULL){
-		LiberaTipoRoteador(p->rot);
+		p->rot = NULL;
 		k = p;
-		free(k);
 		p = p->prox;
+		free(k);
 	}
+	lsRot->prim = NULL;
+	lsRot->ult = NULL;
 }
 
 static void LiberaTipoRoteador(Roteador* rot){
