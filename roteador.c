@@ -194,7 +194,7 @@ static void DesencadeiaRoteador(CelRot* p, LsRot* listaRot){
 	}
 }
 
-static void LiberaListaRot(LsRot* lsRot){
+static void LiberaListaRotConectados(LsRot* lsRot){
 	CelRot* p = lsRot->prim;
 	CelRot* k;
 	
