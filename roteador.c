@@ -211,5 +211,5 @@ static void LiberaListaRotConectados(LsRot* lsRot){
 static void LiberaTipoRoteador(Roteador* rot){
 	free(rot->nome);
 	free(rot->operadora);
-	LiberaListaRot(rot->rotConectados);
+	LiberaListaRotConectados(rot->rotConectados);
 }
