@@ -194,22 +194,17 @@ static void DesencadeiaRoteador(CelRot* p, LsRot* listaRot){
 	}
 }
 
-static void LiberaListaRotConectados(LsRot* lsRot){
-	CelRot* p = lsRot->prim;
-	CelRot* k;
-	
-	while(p != NULL){
-		p->rot = NULL;
-		k = p;
-		p = p->prox;
-		free(k);
-	}
-	lsRot->prim = NULL;
-	lsRot->ult = NULL;
-}
-
 static void LiberaTipoRoteador(Roteador* rot){
 	free(rot->nome);
 	free(rot->operadora);
-	LiberaListaRotConectados(rot->rotConectados);
+	
+	CelRot* p = rot->rotConectados->prim;
+	CelRot* aux;
+	
+	while(p != NULL){
+		aux = p;
+		p = p->prox;
+		free(aux);
+	}
+	free(rot->rotConectados);
 }
