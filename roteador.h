@@ -53,7 +53,7 @@ LsRot* InicializaListaRot();
 static Roteador* criaRoteador(char* rot, char* operadora);
 static CelRot* BuscaRoteador (char* nomeRot, LsRot* listaRot);
 static void DesencadeiaRoteador(CelRot* p, LsRot* listaRot);
-static void LiberaListaRot(LsRot* lsRot);
+static void LiberaListaRotConectados(LsRot* lsRot);
 static void LiberaTipoRoteador(Roteador* rot);
 
 #endif /* ROTEADOR_H_ */
