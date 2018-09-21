@@ -205,3 +205,19 @@ static void LiberaTipoRoteador(Roteador* rot){
 	free(rot->rotConectados);  //Libera a lista de roteadores conectados
 	free(rot);
 }
+
+char* retornaNomeRot(Roteador* rot){
+	return rot->nome;
+}
+
+LsRot* retornaRotConectados(Roteador* rot){
+	return rot->rotConectados;
+}
+
+CelRot* retornaPrim (LsRot* listaRot){
+	return listaRot->prim;
+}
+
+CelRot* retornaProxCel (CelRot* celrot){
+	return celrot->prox;
+}
