@@ -1,5 +1,5 @@
-#ifndef AUXILIAR_H_
-#define AUXILIAR_H_
+#ifndef ARQUIVO_H_
+#define ARQUIVO_H_
 
 /*Abre o arquivo
 * inputs: nome do arquivo
@@ -33,4 +33,4 @@ void EscreveLog (char* nomeItem);
 */
 void EscreveSaida (char* nomeComando, char* nome1, char* nome2, int valor);
 
-#endif /* AUXILIAR_H_ */
+#endif /* ARQUIVO_H_ */
