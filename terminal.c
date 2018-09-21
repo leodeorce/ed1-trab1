@@ -64,8 +64,43 @@ CelTerm* RemoveTerminal (char* nomeTerm, CelTerm* listaTerm){
 	
 }
 
-void EnviarPacoteDados (char* nomeTerm1, char* nomeTerm2, CelTerm* listaTerm){
+void EnviaPacotesDados (char* term1, char* term2, CelTerm* listaTerm){
+
+	Terminal* t1 = BuscaTerminal(term1, listaTerm);
+	if (t1 == NULL){
+		//ERRO, TERMINAL NAO CADASTRADO
+		return;
+	}
 	
+	Terminal* t2 = BuscaTerminal(term2, listaTerm);
+	if (t2 == NULL){
+		//ERRO, TERMINAL NAO CADASTRADO
+		return;
+	}
+	
+	char* rotT2 = retornaNomeRot(t2->rot);
+	LsRot* ls = retornaRotConectados(t1->rot);
+	
+	CelRot* c = BuscaRoteador(rotT2, ls);
+
+	if (c == NULL){
+		CelRot* p = retornaPrim(ls);
+		LsRot* aux;
+		int i =0;
+	
+		while (p != NULL && c== NULL){
+			aux = retornaRotConectados(p);
+			c = BuscaRoteador (rotT2, aux);
+			p = retornaProxCel(p);
+		}	
+	}else{
+		printf("SIM");
+		return;
+	}
+	if (c == NULL)
+		printf("NAO");
+	else
+		printf("SIM");
 }
 
 void FrequenciaTerminal (char* localizacao, CelTerm* listaTerm){
