@@ -206,12 +206,12 @@ static void LiberaTipoRoteador(Roteador* rot){
 	free(rot);
 }
 
-char* retornaNomeRot(Roteador* rot){
-	return rot->nome;
+char* retornaNomeRot(CelRot* rot){
+	return rot->rot->nome;
 }
 
-LsRot* retornaRotConectados(Roteador* rot){
-	return rot->rotConectados;
+LsRot* retornaRotConectados(CelRot* rot){
+	return rot->rot->rotConectados;
 }
 
 CelRot* retornaPrim (LsRot* listaRot){
