@@ -1,5 +1,8 @@
 #ifndef ROTEADOR_H_
 #define ROTEADOR_H_
+
+// #include "arquivo.h"
+
 //Tipo do roteador, um item da celula
 typedef struct roteador Roteador;
 
@@ -47,7 +50,7 @@ void DesconectaRoteadores (char* nomeRot1, char* nomeRot2, LsRot* listaRot);
 * pre-condicao: nenhum
 * pos-condicao: nenhum
 */
-int FrequenciaOperadora (char* operadora, LsRot* listaRot);
+void FrequenciaOperadora (char* operadora, LsRot* listaRot);
 
 /*Inicializa lista de roteadores
 * inputs: nenhum
@@ -57,21 +60,16 @@ int FrequenciaOperadora (char* operadora, LsRot* listaRot);
 */
 LsRot* InicializaListaRot();
 
-/*Cria tipo roteador
-* inputs: nome do roteador e da operadora
-* output: ponteiro pro tipo roteador
-* pre-condicao: nenhum
-* pos-condicao: tipo roteador criado
-*/
-static Roteador* criaRoteador(char* rot, char* operadora);
-
 /*Busca um roteador  numa lista de roteadores
 * inputs: nome do roteador e ponteiro pra lista de roteadores
 * output: ponteiro pra celula onde o roteador esta
 * pre-condicao: nenhum
 * pos-condicao: roteador encontrado ou retorna NULL
 */
-static CelRot* BuscaRoteador (char* nomeRot, LsRot* listaRot);
+CelRot* BuscaRoteador (char* nomeRot, LsRot* listaRot);
+
+static Roteador* criaRoteador(char* rot, char* operadora);
+static void EncadeiaRoteador(CelRot* celR, LsRot* listaRot);
 static void DesencadeiaRoteador(CelRot* p, LsRot* listaRot);
 static void LiberaTipoRoteador(Roteador* rot);
 

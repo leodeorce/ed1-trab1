@@ -1,5 +1,8 @@
 #ifndef TERMINAL_H_
 #define TERMINAL_H_
+
+#include "roteador.h"
+
 //Tipo do terminal (sugiro uma estrutura com nome, localizacao e roteador)
 typedef struct terminal Terminal;
 
@@ -8,7 +11,7 @@ typedef struct celTerm CelTerm;
 
 /*Insere um terminal na lista de terminais do NetMap na ultima posicao
 * inputs: nome do terminal e localizacao
-* output: nenhum
+* output: lista de terminais
 * pre-condicao: terminal existe
 * pos-condicao: terminal inserido no netmap 
 */
@@ -20,7 +23,7 @@ CelTerm* CadastraTerminal (char* nomeTerm, char* localizacao, CelTerm* listaTerm
 * pre-condicao: terminal e roteador existem
 * pos-condicao: terminal conectado no roteador
 */
-void ConectaTerminal (char* nomeTerm, char* nomeRot, CelTerm* listaTerm);
+void ConectaTerminal (char* nomeTerm, char* nomeRot, CelTerm* listaTerm, LsRot* listaRot);
 
 /*Desconecta um terminal de um roteador
 * inputs: nome do terminal
@@ -32,7 +35,7 @@ void DesconectaTerminal (char* nomeTerm, CelTerm* listaTerm);
 
 /*Remove um terminal da lista de terminais do netmap
 * inputs: nome do terminal
-* output: nenhum
+* output: lista de terminais
 * pre-condicao: terminal existe
 * pos-condicao: terminal removido do netmap
 */
@@ -56,10 +59,36 @@ void FrequenciaTerminal (char* localizacao, CelTerm* listaTerm);
 
 /*Inicializa lista de terminais
 * inputs: nenhum
-* output: lista sem sentinela simplesmente encadeada
+* output: lista de terminais
 * pre-condicao: nenhum
 * pos-condicao: lista de terminais inicializada
 */
 CelTerm* InicializaListaTerm ();
+
+/*Destroi lista de terminais
+* inputs: lista de terminais
+* output: nenhum
+* pre-condicao: lista de terminais inicializada
+* pos-condicao: lista de terminais destruida
+*/
+void LiberaListaTerm (CelTerm* listaTerm);
+
+/*Encontra terminal com o nome passado na lista de terminais
+* inputs: nome do terminal e lista onde procurar
+* output: tipo do terminal encontrado ou NULL caso nao encontre
+* pre-condicao: lista de terminais inicializada
+* pos-condicao: lista de terminais inalterada
+*/
+Terminal* BuscaTerminal (char* nomeTerm, CelTerm* listaTerm);
+
+/*Desconecta roteador cujo nome e passado dos terminais da lista passada
+* inputs: nome do roteador e lista onde procurar
+* output: nenhum
+* pre-condicao: lista de terminais inicializada
+* pos-condicao: roteador desconectado de todos os terminais da lista
+*/
+void DesconectaRoteador (char* nomeRot, CelTerm* listaTerm, LsRot* listaRot);
+
+static Terminal* criaTerminal (char* nomeTerm, char* localizacao);
 
 #endif /* TERMINAL_H_ */

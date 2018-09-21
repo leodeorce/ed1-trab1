@@ -1,23 +1,19 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "roteador.h"
-#include "terminal.h"
+#include "terminal.h"		// terminal.h inclui roteador.h
 
-typedef struct celRot CelRot;
 struct celRot{
 	CelRot *prox, *ant;
 	Roteador* rot;
 };
 
-typedef struct roteador Roteador;
 struct roteador{
 	char* nome;
 	char* operadora;
 	LsRot* rotConectados;
 };
 
-typedef struct lsRot LsRot;
 struct lsRot{
 	CelRot *prim, *ult;
 };
@@ -105,7 +101,7 @@ void DesconectaRoteadores (char* nomeRot1, char* nomeRot2, LsRot* listaRot){
 	free(celRC);
 }
 
-int FrequenciaOperadora (char* operadora, LsRot* listaRot){
+void FrequenciaOperadora (char* operadora, LsRot* listaRot){
 	int qtdRot = 0;
 	CelRot* p = listaRot->prim;
 	
@@ -115,7 +111,7 @@ int FrequenciaOperadora (char* operadora, LsRot* listaRot){
 		}
 		p = p->prox;
 	}
-	return qtdRot;
+	//return qtdRot;
 }
 
 LsRot* InicializaListaRot(){                    
@@ -142,12 +138,12 @@ static Roteador* criaRoteador(char* rot, char* operadora){
 	return r;
 }
 
-static CelRot* BuscaRoteador (char* nomeRot, LsRot* listaRot){
+CelRot* BuscaRoteador (char* nomeRot, LsRot* listaRot){
 	CelRot* p = listaRot->prim;
 	
 	while((p!=NULL) && (strcmp(p->rot->nome, nomeRot) != 0)){
 		p = p->prox;
-	};	
+	}	
 	return p;
 }
 
@@ -207,4 +203,5 @@ static void LiberaTipoRoteador(Roteador* rot){
 		free(aux);
 	}
 	free(rot->rotConectados);  //Libera a lista de roteadores conectados
+	free(rot);
 }
