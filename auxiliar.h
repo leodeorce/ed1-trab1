@@ -33,20 +33,4 @@ void EscreveLog (char* nomeItem);
 */
 void EscreveSaida (char* nomeComando, char* nome1, char* nome2, int valor);
 
-/*Encontra celula de roteador presente na lista de roteadores
-* inputs: nome do roteador e lista de roteadores
-* output: celula da lista de roteadores contendo ponteiro para item roteador ou NULL caso não ache
-* pre-condicao: lista iniciliazada
-* pos-condicao: nenhuma
-*/
-CelRot* BuscaRoteador (char* nomeRot, LsRot* listaRot);
-
-/*Encontra terminal presente na lista de terminais
-* inputs: nome do terminal e lista de terminais
-* output: celula da lista de terminais contendo ponteiro para item terminal ou NULL caso não ache
-* pre-condicao: lista iniciliazada
-* pos-condicao: nenhuma
-*/
-CelTerm* BuscaTerminal (char* nomeTerm, LsTerm* listaTerm);
-
 #endif /* AUXILIAR_H_ */
