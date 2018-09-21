@@ -73,4 +73,9 @@ static void EncadeiaRoteador(CelRot* celR, LsRot* listaRot);
 static void DesencadeiaRoteador(CelRot* p, LsRot* listaRot);
 static void LiberaTipoRoteador(Roteador* rot);
 
+char* retornaNomeRot(CelRot* rot);
+LsRot* retornaRotConectados(CelRot* rot);
+CelRot* retornaPrim (LsRot* listaRot);
+CelRot* retornaProxCel (CelRot* celrot);
+
 #endif /* ROTEADOR_H_ */
