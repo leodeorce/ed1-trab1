@@ -64,7 +64,7 @@ CelTerm* RemoveTerminal (char* nomeTerm, CelTerm* listaTerm){
 	
 }
 
-void EnviaPacotesDados (char* term1, char* term2, CelTerm* listaTerm){
+void EnviarPacotesDados (char* term1, char* term2, CelTerm* listaTerm){
 
 	Terminal* t1 = BuscaTerminal(term1, listaTerm);
 	if (t1 == NULL){
