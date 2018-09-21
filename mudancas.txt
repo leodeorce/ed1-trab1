@@ -1,7 +1,0 @@
--	Valgrind encontrou vazamento, adicionar free(rot) em LiberaTipoRoteador resolveu;
--	BuscaRoteador não static, porque precisa dela em terminal.c;
--	terminal.h inclui roteador.h por conta dos argumentos;
--	Função DesconectaRoteador em terminal.c para ajudar com RemoveRoteador em roteador.c;
--	FrequenciaOperadora agora void;
--	Todas as funções definidas nas bibliotecas, porém as static sem descrição;
--	Removidos typedef em roteador.c.
