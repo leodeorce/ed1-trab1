@@ -47,7 +47,7 @@ CelTerm* RemoveTerminal (char* nomeTerm, CelTerm* listaTerm);
 * pre-condicao: terminais existem
 * pos-condicao: terminais não sao modificados e foram feitas as verificacoes
 */
-void EnviarPacoteDados (char* nomeTerm1, char* nomeTerm2, CelTerm* listaTerm);
+void EnviarPacotesDados (char* nomeTerm1, char* nomeTerm2, CelTerm* listaTerm);
 
 /*Conta quantos terminais estão na localizacao de entrada
 * inputs: a string que contenha uma localizacao
