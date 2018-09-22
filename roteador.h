@@ -1,8 +1,6 @@
 #ifndef ROTEADOR_H_
 #define ROTEADOR_H_
 
-// #include "arquivo.h"
-
 //Tipo do roteador, um item da celula
 typedef struct roteador Roteador;
 

@@ -47,7 +47,7 @@ CelTerm* RemoveTerminal (char* nomeTerm, CelTerm* listaTerm);
 * pre-condicao: terminais existem
 * pos-condicao: terminais não sao modificados e foram feitas as verificacoes
 */
-void EnviarPacotesDados (char* nomeTerm1, char* nomeTerm2, CelTerm* listaTerm);
+void EnviarPacotesDados (char* term1, char* term2, CelTerm* listaTerm);
 
 /*Conta quantos terminais estão na localizacao de entrada
 * inputs: a string que contenha uma localizacao
@@ -79,7 +79,7 @@ void LiberaListaTerm (CelTerm* listaTerm);
 * pre-condicao: lista de terminais inicializada
 * pos-condicao: lista de terminais inalterada
 */
-Terminal* BuscaTerminal (char* nomeTerm, CelTerm* listaTerm);
+CelTerm* BuscaTerminal (char* nomeTerm, CelTerm* listaTerm);
 
 /*Desconecta roteador cujo nome e passado dos terminais da lista passada
 * inputs: nome do roteador e lista onde procurar

@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "terminal.h"		// terminal.h inclui roteador.h
+#include "terminal.h"
 
 struct celRot{
 	CelRot *prox, *ant;
@@ -24,7 +24,7 @@ void CadastraRoteador (char* rot, char* operadora, LsRot* listaRot){
 	celR->rot = r;
 	
 	EncadeiaRoteador(celR, listaRot);
-};
+}
 
 void RemoveRoteador (char* nomeRot, LsRot* listaRot){
 	CelRot* p = BuscaRoteador(nomeRot, listaRot);   //busca o roteador no netmap
