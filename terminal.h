@@ -9,6 +9,8 @@ typedef struct terminal Terminal;
 //Tipo da celula da lista de terminais; (deve conter prox e tipo do terminal);
 typedef struct celTerm CelTerm;
 
+/*  Principais */
+
 /*Insere um terminal na lista de terminais do NetMap na ultima posicao
 * inputs: nome do terminal e localizacao
 * output: lista de terminais
@@ -16,6 +18,14 @@ typedef struct celTerm CelTerm;
 * pos-condicao: terminal inserido no netmap 
 */
 CelTerm* CadastraTerminal (char* nomeTerm, char* localizacao, CelTerm* listaTerm);
+
+/*Remove um terminal da lista de terminais do netmap
+* inputs: nome do terminal
+* output: lista de terminais
+* pre-condicao: terminal existe
+* pos-condicao: terminal removido do netmap
+*/
+CelTerm* RemoveTerminal (char* nomeTerm, CelTerm* listaTerm);
 
 /*Conecta um terminal a um roteador
 * inputs: nome do terminal e do roteador
@@ -33,14 +43,6 @@ void ConectaTerminal (char* nomeTerm, char* nomeRot, CelTerm* listaTerm, LsRot* 
 */
 void DesconectaTerminal (char* nomeTerm, CelTerm* listaTerm);
 
-/*Remove um terminal da lista de terminais do netmap
-* inputs: nome do terminal
-* output: lista de terminais
-* pre-condicao: terminal existe
-* pos-condicao: terminal removido do netmap
-*/
-CelTerm* RemoveTerminal (char* nomeTerm, CelTerm* listaTerm);
-
 /*Verifica se e possivel enviar dados para outro terminal
 * inputs: nome do terminal origem e destino, respectivamente
 * output: SIM se for possivel e NAO, caso contrario
@@ -57,6 +59,8 @@ void EnviarPacotesDados (char* term1, char* term2, CelTerm* listaTerm);
 */
 void FrequenciaTerminal (char* localizacao, CelTerm* listaTerm);
 
+/*  Auxiliares */
+
 /*Inicializa lista de terminais
 * inputs: nenhum
 * output: lista de terminais
@@ -64,14 +68,6 @@ void FrequenciaTerminal (char* localizacao, CelTerm* listaTerm);
 * pos-condicao: lista de terminais inicializada
 */
 CelTerm* InicializaListaTerm ();
-
-/*Destroi lista de terminais
-* inputs: lista de terminais
-* output: nenhum
-* pre-condicao: lista de terminais inicializada
-* pos-condicao: lista de terminais destruida
-*/
-void LiberaListaTerm (CelTerm* listaTerm);
 
 /*Encontra terminal com o nome passado na lista de terminais
 * inputs: nome do terminal e lista onde procurar
@@ -81,14 +77,12 @@ void LiberaListaTerm (CelTerm* listaTerm);
 */
 CelTerm* BuscaTerminal (char* nomeTerm, CelTerm* listaTerm);
 
-/*Desconecta roteador cujo nome e passado dos terminais da lista passada
-* inputs: nome do roteador e lista onde procurar
+/*Destroi lista de terminais
+* inputs: lista de terminais
 * output: nenhum
 * pre-condicao: lista de terminais inicializada
-* pos-condicao: roteador desconectado de todos os terminais da lista
+* pos-condicao: lista de terminais destruida
 */
-void DesconectaRoteador (char* nomeRot, CelTerm* listaTerm, LsRot* listaRot);
-
-static Terminal* criaTerminal (char* nomeTerm, char* localizacao);
+void LiberaListaTerm (CelTerm* listaTerm);
 
 #endif /* TERMINAL_H_ */

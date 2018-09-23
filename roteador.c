@@ -1,7 +1,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "terminal.h"
+#include "roteador.h"
+
+static Roteador* criaRoteador (char* rot, char* operadora);
+static void EncadeiaRoteador (CelRot* celR, LsRot* listaRot);
+static void DesencadeiaRoteador (CelRot* p, LsRot* listaRot);
+static void LiberaTipoRoteador (Roteador* rot);
+static void EscreveLOG ();
+static void EscreveSAIDA ();
 
 struct celRot{
 	CelRot *prox, *ant;
@@ -18,10 +25,15 @@ struct lsRot{
 	CelRot *prim, *ult;
 };
 
+/* Principais */
+
 void CadastraRoteador (char* rot, char* operadora, LsRot* listaRot){
 	Roteador* r = criaRoteador(rot, operadora);
 	CelRot* celR = (CelRot*) malloc(sizeof(CelRot));
 	celR->rot = r;
+	
+	printf ("Nome: %s\n", celR->rot->nome);
+	printf ("operadora: %s", celR->rot->operadora);	
 	
 	EncadeiaRoteador(celR, listaRot);
 }
@@ -31,6 +43,7 @@ void RemoveRoteador (char* nomeRot, LsRot* listaRot){
 	
 	if(p == NULL){
 		//IMPRIME MENSAGEM DE ERRO
+		printf("Erro: RemoveRoteador: Roteador nao encontrado");
 		return;
 	}
 	
@@ -49,12 +62,14 @@ void RemoveRoteador (char* nomeRot, LsRot* listaRot){
 	LiberaTipoRoteador(p->rot);
 	free(p);
 	
+	printf("Roteador %s removido", nomeRot);
 }
 
 void ConectaRoteadores (char* nomeRot1, char* nomeRot2, LsRot* listaRot){
 	CelRot* c = BuscaRoteador(nomeRot1, listaRot);  //busca o roteador 1 no netmap
 	if(c == NULL){
 		//IMPRIME MENSAGEM DE ERRO
+		printf("Erro: %s nao existe", nomeRot1);
 		return;
 	}
 	Roteador* r1 = c->rot;   //guarda o ponteiro pro tipo roteador 1
@@ -62,6 +77,7 @@ void ConectaRoteadores (char* nomeRot1, char* nomeRot2, LsRot* listaRot){
 	c = BuscaRoteador(nomeRot2, listaRot); //busca o roteador 2 no netmap
 	if(c == NULL){
 		//IMPRIME MENSAGEM DE ERRO
+		printf("Erro: %s nao existe", nomeRot2);
 		return;
 	}
 	Roteador* r2 = c->rot; //guarda o ponteiro pro tipo roteador 2
@@ -74,23 +90,27 @@ void ConectaRoteadores (char* nomeRot1, char* nomeRot2, LsRot* listaRot){
 	EncadeiaRoteador(c2, c1->rot->rotConectados); //Encadeia celula 2 na lista de roteadores conectados do roteador 1
 	EncadeiaRoteador(c1, c2->rot->rotConectados); //Encadeia celula 1 na lista de roteadores conectados do roteador 2
 	
+	printf("%s e %s conectados", nomeRot1, nomeRot2);
 }
 
 void DesconectaRoteadores (char* nomeRot1, char* nomeRot2, LsRot* listaRot){
 	CelRot* celNP1 = BuscaRoteador(nomeRot1, listaRot);  //Encontra o roteador 1 no netmap
 	if(celNP1 == NULL){
 		//IMPRIME MENSAGEM DE ERRO
+		printf("Erro: %s nao existe", nomeRot1);
 		return;
 	}
 	CelRot* celNP2 = BuscaRoteador(nomeRot2, listaRot); //Encontra o roteador 2 no netmap
 	if(celNP2 == NULL){
 		//IMPRIME MENSAGEM DE ERRO
+		printf("Erro: %s nao existe", nomeRot2);
 		return;
 	}
 	
 	CelRot* celRC = BuscaRoteador(nomeRot2, celNP1->rot->rotConectados); //Encontra o roteador 2 na lista de roteadores conectados do roteador 1
 	if(celRC == NULL){
 		//IMPRIME MENSAGEM DE ERRO
+		printf("Erro: DesconectaRoteadores: Roteadores nao conectados");
 		return;
 	}
 	DesencadeiaRoteador(celRC, celNP1->rot->rotConectados); //Desencadeia o roteador 2 da lista de roteadores conectados do roteador 1
@@ -99,6 +119,8 @@ void DesconectaRoteadores (char* nomeRot1, char* nomeRot2, LsRot* listaRot){
 	celRC = BuscaRoteador(nomeRot1, celNP2->rot->rotConectados); //Encontra o roteador 1 na lista de roteadores conectados do roteador 2
 	DesencadeiaRoteador(celRC, celNP2->rot->rotConectados); //Desencadeia o roteador 2 da lista de roteadores conectados do roteador 1
 	free(celRC);
+	
+	printf("%s e %s desconectados", nomeRot1, nomeRot2);
 }
 
 void FrequenciaOperadora (char* operadora, LsRot* listaRot){
@@ -111,8 +133,10 @@ void FrequenciaOperadora (char* operadora, LsRot* listaRot){
 		}
 		p = p->prox;
 	}
-	//return qtdRot;
+	printf("Frequencia operadora %s: %d", operadora, qtdRot);
 }
+
+/* Auxiliares Compartilhados */
 
 LsRot* InicializaListaRot(){                    
 	LsRot* listaRt = (LsRot*) malloc(sizeof(LsRot));
@@ -120,10 +144,34 @@ LsRot* InicializaListaRot(){
 	listaRt->ult = NULL;
 	
 	return listaRt;
-	
 }
 
-//Auxiliares
+CelRot* BuscaRoteador (char* nomeRot, LsRot* listaRot){
+	CelRot* p = listaRot->prim;
+	
+	while((p!=NULL) && (strcmp(p->rot->nome, nomeRot) != 0)){
+		p = p->prox;
+	}	
+	return p;
+}
+
+char* retornaNomeRot(CelRot* rot){
+	return rot->rot->nome;
+}
+
+LsRot* retornaRotConectados(CelRot* rot){
+	return rot->rot->rotConectados;
+}
+
+CelRot* retornaPrim (LsRot* listaRot){
+	return listaRot->prim;
+}
+
+CelRot* retornaProxCel (CelRot* celrot){
+	return celrot->prox;
+}
+
+/* Auxiliares Exclusivos */
 
 static Roteador* criaRoteador(char* rot, char* operadora){ 
 	Roteador* r = (Roteador*) malloc(sizeof(Roteador));	
@@ -135,16 +183,9 @@ static Roteador* criaRoteador(char* rot, char* operadora){
 	
 	r->rotConectados = InicializaListaRot();
 	
-	return r;
-}
-
-CelRot* BuscaRoteador (char* nomeRot, LsRot* listaRot){
-	CelRot* p = listaRot->prim;
+	puts("Roteador criado");
 	
-	while((p!=NULL) && (strcmp(p->rot->nome, nomeRot) != 0)){
-		p = p->prox;
-	}	
-	return p;
+	return r;
 }
 
 static void EncadeiaRoteador(CelRot* celR, LsRot* listaRot){
@@ -206,18 +247,10 @@ static void LiberaTipoRoteador(Roteador* rot){
 	free(rot);
 }
 
-char* retornaNomeRot(CelRot* rot){
-	return rot->rot->nome;
+static void EscreveLOG (){
+	// Chamado em qualquer comando que nao possa ser executado.
 }
 
-LsRot* retornaRotConectados(CelRot* rot){
-	return rot->rot->rotConectados;
-}
-
-CelRot* retornaPrim (LsRot* listaRot){
-	return listaRot->prim;
-}
-
-CelRot* retornaProxCel (CelRot* celrot){
-	return celrot->prox;
+static void EscreveSAIDA (){
+	// Chamado em FrequenciaOperadora.
 }

@@ -10,6 +10,8 @@ typedef struct celRot CelRot;
 //Tipo da lista de roteadores;
 typedef struct lsRot LsRot;
 
+/*  Principais */
+
 /*Insere um roteador na lista de roteadores do NetMap na ultima posicao
 * inputs: nome do roteador e da operadora e ponteiro pra lista de roteadores
 * output: nenhum
@@ -50,6 +52,8 @@ void DesconectaRoteadores (char* nomeRot1, char* nomeRot2, LsRot* listaRot);
 */
 void FrequenciaOperadora (char* operadora, LsRot* listaRot);
 
+/*  Auxiliares */
+
 /*Inicializa lista de roteadores
 * inputs: nenhum
 * output: ponteiro pro tipo lista de roteadores
@@ -65,11 +69,6 @@ LsRot* InicializaListaRot();
 * pos-condicao: roteador encontrado ou retorna NULL
 */
 CelRot* BuscaRoteador (char* nomeRot, LsRot* listaRot);
-
-static Roteador* criaRoteador(char* rot, char* operadora);
-static void EncadeiaRoteador(CelRot* celR, LsRot* listaRot);
-static void DesencadeiaRoteador(CelRot* p, LsRot* listaRot);
-static void LiberaTipoRoteador(Roteador* rot);
 
 char* retornaNomeRot(CelRot* rot);
 LsRot* retornaRotConectados(CelRot* rot);
