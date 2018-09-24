@@ -1,8 +1,6 @@
 #ifndef TERMINAL_H_
 #define TERMINAL_H_
 
-#include "roteador.h"
-
 //Tipo do terminal (sugiro uma estrutura com nome, localizacao e roteador)
 typedef struct terminal Terminal;
 
@@ -33,7 +31,7 @@ CelTerm* RemoveTerminal (char* nomeTerm, CelTerm* listaTerm);
 * pre-condicao: terminal e roteador existem
 * pos-condicao: terminal conectado no roteador
 */
-void ConectaTerminal (char* nomeTerm, char* nomeRot, CelTerm* listaTerm, LsRot* listaRot);
+void ConectaTerminal (char* nomeTerm, char* nomeRot, CelTerm* listaTerm, void* listaRot);
 
 /*Desconecta um terminal de um roteador
 * inputs: nome do terminal
@@ -84,5 +82,13 @@ CelTerm* BuscaTerminal (char* nomeTerm, CelTerm* listaTerm);
 * pos-condicao: lista de terminais destruida
 */
 void LiberaListaTerm (CelTerm* listaTerm);
+
+/*Desconecta roteador cuja celula e passada dos terminais da lista de terminais
+* inputs: celula do roteador e lista onde procurar
+* output: nenhum
+* pre-condicao: lista de terminais inicializada
+* pos-condicao: roteador desconectado de todos os terminais da lista de terminais
+*/
+void DesconectaRoteador (void* celR, CelTerm* listaTerm, void* listaRot);
 
 #endif /* TERMINAL_H_ */

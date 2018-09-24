@@ -7,7 +7,6 @@
 
 static void Leitura (FILE* entrada);
 static CelTerm* ExecutaComando (char** item, CelTerm* listaTerm, LsRot* listaRot);
-static void EscreveDOT ();
 
 int CriaNetmap (int argv, char** argc){		// Recebe nome do arquivo como argumento.
 	
@@ -68,7 +67,10 @@ static void Leitura (FILE* entrada){
 		
 		listaTerm = ExecutaComando(item, listaTerm, listaRot);		// Chama funcao de execucao dos comandos.
 		printf("\n");
-
+		
+		CelRot* Debug = ImprimeDebug (listaTerm);
+		printf("rot*: %p\n", Debug);
+		
 	}while(1);		// Condicao de parada ja presente no do-while.
 	
 	printf("\n\n");
@@ -101,7 +103,7 @@ static CelTerm* ExecutaComando (char** item, CelTerm* listaTerm, LsRot* listaRot
 				for(j=0; j<i; j++)
 					printf(" %s", item[j]);
 				printf("\n");
-				RemoveRoteador(item[1], listaRot);
+				RemoveRoteador(item[1], listaRot, listaTerm);
 				break;
 			}
 			if( !strcmp(item[0], "REMOVETERMINAL")){
@@ -188,10 +190,6 @@ static CelTerm* ExecutaComando (char** item, CelTerm* listaTerm, LsRot* listaRot
 	
 	printf("\n");
 	return listaTerm;
-}
-
-static void EscreveDOT (){
-	// Chamado em ImprimeNetMap.
 }
 
 void EscreveLog (char* mensagem){

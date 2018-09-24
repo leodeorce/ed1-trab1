@@ -26,7 +26,7 @@ void CadastraRoteador (char* rot, char* operadora, LsRot* listaRot);
 * pre-condicao: roteador existe
 * pos-condicao: roteador removido do netmap 
 */
-void RemoveRoteador (char* nomeRot, LsRot* listaRot);
+void RemoveRoteador (char* nomeRot, LsRot* listaRot, void* listaTerm);
 
 /*Conecta um roteador ao outro
 * inputs: nome dos roteadores e ponteiro pra lista de roteadores em que estão

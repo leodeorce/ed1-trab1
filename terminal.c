@@ -2,10 +2,9 @@
 #include <stdlib.h>
 #include <string.h>
 #include "terminal.h"
+#include "roteador.h"
 
 static Terminal* criaTerminal (char* nomeTerm, char* localizacao);
-static void EscreveLOG ();
-static void EscreveSAIDA ();
 
 struct terminal{
 	char* nome;
@@ -67,7 +66,7 @@ CelTerm* RemoveTerminal (char* nomeTerm, CelTerm* listaTerm){
 	return listaTerm;
 }
 
-void ConectaTerminal (char* nomeTerm, char* nomeRot, CelTerm* listaTerm, LsRot* listaRot){
+void ConectaTerminal (char* nomeTerm, char* nomeRot, CelTerm* listaTerm, void* listaRot){
 	
 	CelTerm* celT = BuscaTerminal(nomeTerm, listaTerm);
 	
@@ -117,6 +116,7 @@ void EnviarPacotesDados (char* term1, char* term2, CelTerm* listaTerm){
 		
 		char* rotT1 = retornaNomeRot(celT1->term->rot);
 		char* rotT2 = retornaNomeRot(celT2->term->rot);
+		printf("rotT2: %s\n", rotT2);
 		
 		if (!strcmp(rotT1, rotT2)){
 			printf("SIM");
@@ -212,6 +212,25 @@ void LiberaListaTerm (CelTerm* listaTerm){
 	puts("Lista de terminais destruida");
 }
 
+void DesconectaRoteador (void* celR, CelTerm* listaTerm, void* listaRot){
+	
+	CelTerm* celT = listaTerm;
+	
+	while(celT != NULL){
+		
+		if(celT->term->rot == celR){
+			
+			celT->term->rot = NULL;
+			printf("Desconectei terminal %s de seu roteador", celT->term->nome);
+		}
+		celT = celT->prox;
+	}
+}
+
+CelRot* ImprimeDebug (CelTerm* listaTerm){
+	return listaTerm->term->rot;
+}
+
 /* Auxiliares Exclusivos */
 
 static Terminal* criaTerminal (char* nomeTerm, char* localizacao){
@@ -227,12 +246,4 @@ static Terminal* criaTerminal (char* nomeTerm, char* localizacao){
 	puts("Terminal criado");
 	
 	return t;
-}
-
-static void EscreveLOG (){
-	// Chamado em qualquer comando que nao possa ser executado.
-}
-
-static void EscreveSAIDA (){
-	// Chamado em EnviarPacotesDados e FrequenciaTerminal.
 }

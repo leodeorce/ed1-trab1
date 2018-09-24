@@ -2,13 +2,12 @@
 #include <stdlib.h>
 #include <string.h>
 #include "roteador.h"
+#include "terminal.h"
 
 static Roteador* criaRoteador (char* rot, char* operadora);
 static void EncadeiaRoteador (CelRot* celR, LsRot* listaRot);
 static void DesencadeiaRoteador (CelRot* p, LsRot* listaRot);
 static void LiberaTipoRoteador (Roteador* rot);
-static void EscreveLOG ();
-static void EscreveSAIDA ();
 
 struct celRot{
 	CelRot *prox, *ant;
@@ -38,7 +37,7 @@ void CadastraRoteador (char* rot, char* operadora, LsRot* listaRot){
 	EncadeiaRoteador(celR, listaRot);
 }
 
-void RemoveRoteador (char* nomeRot, LsRot* listaRot){
+void RemoveRoteador (char* nomeRot, LsRot* listaRot, void* listaTerm){
 	CelRot* p = BuscaRoteador(nomeRot, listaRot);   //busca o roteador no netmap
 	
 	if(p == NULL){
@@ -57,7 +56,8 @@ void RemoveRoteador (char* nomeRot, LsRot* listaRot){
 		free(pConec);        
 		prc = prc->prox;
 	}
-
+	
+	DesconectaRoteador(p, listaTerm, listaRot);		//Desconecta roteador de todos terminais
 	DesencadeiaRoteador(p, listaRot);    //Desencadeia da lista de roteadores do netmap
 	LiberaTipoRoteador(p->rot);
 	free(p);
@@ -245,12 +245,4 @@ static void LiberaTipoRoteador(Roteador* rot){
 	}
 	free(rot->rotConectados);  //Libera a lista de roteadores conectados
 	free(rot);
-}
-
-static void EscreveLOG (){
-	// Chamado em qualquer comando que nao possa ser executado.
-}
-
-static void EscreveSAIDA (){
-	// Chamado em FrequenciaOperadora.
 }

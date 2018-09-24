@@ -9,4 +9,20 @@
 */
 int CriaNetmap (int argv, char** argc);
 
+/*
+* inputs: 
+* output: 
+* pre-condicao: 
+* pos-condicao: 
+*/
+void EscreveLog (char* mensagem);
+
+/*
+* inputs: 
+* output: 
+* pre-condicao: 
+* pos-condicao: 
+*/
+void EscreveSaida (char* mensagem);
+
 #endif /* NETMAP_H_ */
