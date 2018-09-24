@@ -193,3 +193,29 @@ static CelTerm* ExecutaComando (char** item, CelTerm* listaTerm, LsRot* listaRot
 static void EscreveDOT (){
 	// Chamado em ImprimeNetMap.
 }
+
+void EscreveLog (char* mensagem){
+	FILE *log;
+	log = fopen("log.txt", "a+");
+	
+	if(log == NULL){
+		perror("Erro ao abrir o arquivo log.txt");
+		exit(1);
+	}else{
+		fprintf(log, "%s\n", mensagem);
+		fclose(log);
+	}
+}
+
+void EscreveSaida (char* mensagem){
+	FILE *saida;
+	saida = fopen("saida.txt", "a+");
+		
+	if(saida == NULL){
+		perror("Erro ao abrir o arquivo saida.txt");
+		exit(1);
+	}else{
+		fprintf(saida, "%s\n", mensagem);
+		fclose(saida);
+	}
+}
