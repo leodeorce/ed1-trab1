@@ -232,25 +232,6 @@ void DesconectaRoteador (void* celR, CelTerm* listaTerm, void* listaRot){
 	}
 }
 
-CelRot* ImprimeDebug (CelTerm* listaTerm){
-	return listaTerm->term->rot;
-}
-
-/* Auxiliares Exclusivos */
-
-static Terminal* criaTerminal (char* nomeTerm, char* localizacao){
-	
-	Terminal* t = (Terminal*) malloc(sizeof(Terminal));
-	t->nome = (char*) malloc(((strlen(nomeTerm))+1)*sizeof(char));
-	t->localizacao = (char*) malloc(((strlen(localizacao))+1)*sizeof(char));
-	
-	strcpy(t->nome, nomeTerm);
-	strcpy(t->localizacao, localizacao);
-	t->rot = NULL;
-	
-	return t;
-}
-
 void EscreveLOG (char* mensagem){
 	FILE *log;
 	log = fopen("log.txt", "a+");
@@ -275,4 +256,24 @@ void EscreveSAIDA (char* mensagem){
 		fprintf(saida, "%s\n", mensagem);
 		fclose(saida);
 	}
+}
+
+
+CelRot* ImprimeDebug (CelTerm* listaTerm){
+	return listaTerm->term->rot;
+}
+
+/* Auxiliares Exclusivos */
+
+static Terminal* criaTerminal (char* nomeTerm, char* localizacao){
+	
+	Terminal* t = (Terminal*) malloc(sizeof(Terminal));
+	t->nome = (char*) malloc(((strlen(nomeTerm))+1)*sizeof(char));
+	t->localizacao = (char*) malloc(((strlen(localizacao))+1)*sizeof(char));
+	
+	strcpy(t->nome, nomeTerm);
+	strcpy(t->localizacao, localizacao);
+	t->rot = NULL;
+	
+	return t;
 }
