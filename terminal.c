@@ -28,9 +28,6 @@ CelTerm* CadastraTerminal (char* nomeTerm, char* localizacao, CelTerm* listaTerm
 	celT->prox = listaTerm;
 	listaTerm = celT;
 	
-	printf ("Nome: %s\n", listaTerm->term->nome);
-	printf ("Localizacao: %s", listaTerm->term->localizacao);
-	
 	return listaTerm;
 }
 
@@ -46,8 +43,9 @@ CelTerm* RemoveTerminal (char* nomeTerm, CelTerm* listaTerm){
 	}
 	
 	if(auxProx == NULL){
-		// IMPRIME MENSAGEM DE ERRO
-		printf("Erro: RemoveTerminal: Terminal nao encontrado");
+		char msg[50];
+		sprintf(msg,"Erro: Terminal %s nao existe no NetMap", nomeTerm);
+		EscreveLOG(msg);
 		return NULL;
 	}
 	
@@ -61,8 +59,6 @@ CelTerm* RemoveTerminal (char* nomeTerm, CelTerm* listaTerm){
 	free (auxProx->term);
 	free (auxProx);
 	
-	printf("Terminal %s removido", nomeTerm);
-	
 	return listaTerm;
 }
 
@@ -71,15 +67,14 @@ void ConectaTerminal (char* nomeTerm, char* nomeRot, CelTerm* listaTerm, void* l
 	CelTerm* celT = BuscaTerminal(nomeTerm, listaTerm);
 	
 	if(celT == NULL){
-		//Escreve no arquivo que o terminal nao existe.
-		printf("Erro: ConectaTerminal: Terminal nao encontrado");
+		char msg[50];
+		sprintf(msg,"Erro: Terminal %s nao existe no NetMap", nomeTerm);
+		EscreveLOG(msg);
 		return;
 	}
 	
 	CelRot* celR = BuscaRoteador(nomeRot, listaRot);
 	celT->term->rot = celR;
-	
-	printf("Terminal %s conectado ao roteador %s", nomeTerm, nomeRot);
 }
 
 void DesconectaTerminal (char* nomeTerm, CelTerm* listaTerm){
@@ -87,28 +82,30 @@ void DesconectaTerminal (char* nomeTerm, CelTerm* listaTerm){
 	CelTerm* celT = BuscaTerminal(nomeTerm, listaTerm);
 	
 	if(celT == NULL){
-		// Escreve no arquivo que nomeTerm nao existe
-		printf("Erro: DesconectaTerminal: Terminal nao encontrado");
+		char msg[50];
+		sprintf(msg,"Erro: Terminal %s nao existe no NetMap", nomeTerm);
+		EscreveLOG(msg);
 		return;
 		
 	}else
 		celT->term->rot = NULL;
-	printf("Terminal %s desconectado", nomeTerm);
 }
 
-void EnviarPacotesDados (char* term1, char* term2, CelTerm* listaTerm){
+void EnviarPacotesDados (char* nometerm1, char* nometerm2, CelTerm* listaTerm){
 
-	CelTerm* celT1 = BuscaTerminal(term1, listaTerm);
+	CelTerm* celT1 = BuscaTerminal(nometerm1, listaTerm);
 	if (celT1 == NULL){
-		//ERRO, TERMINAL NAO CADASTRADO
-		printf("Erro: EnviarPacotesDados: Terminal %s nao existe", term1);
+		char msg[50];
+		sprintf(msg,"Erro: Terminal %s nao existe no NetMap", nometerm1);
+		EscreveLOG(msg);
 		return;
 	}
 	
-	CelTerm* celT2 = BuscaTerminal(term2, listaTerm);
+	CelTerm* celT2 = BuscaTerminal(nometerm2, listaTerm);
 	if (celT2 == NULL){
-		//ERRO, TERMINAL NAO CADASTRADO
-		printf("Erro: EnviarPacotesDados: Terminal %s nao existe", term2);
+		char msg[50];
+		sprintf(msg,"Erro: Terminal %s nao existe no NetMap", nometerm2);
+		EscreveLOG(msg);
 		return;
 	}
 	
@@ -116,15 +113,18 @@ void EnviarPacotesDados (char* term1, char* term2, CelTerm* listaTerm){
 		
 		char* rotT1 = retornaNomeRot(celT1->term->rot);
 		char* rotT2 = retornaNomeRot(celT2->term->rot);
-		printf("rotT2: %s\n", rotT2);
 		
 		if (!strcmp(rotT1, rotT2)){
-			printf("SIM");
+			char msg[50];
+			sprintf(msg,"ENVIARPACOTESDADOS %s %s: SIM", nometerm1, nometerm2);
+			EscreveSAIDA(msg);
 			return;
 		}
 		
 	}else{
-		printf("NAO");
+		char msg[50];
+		sprintf(msg,"ENVIARPACOTESDADOS %s %s: NAO", nometerm1, nometerm2);
+		EscreveSAIDA(msg);
 		return;
 	}
 	
@@ -143,14 +143,21 @@ void EnviarPacotesDados (char* term1, char* term2, CelTerm* listaTerm){
 			p = retornaProxCel(p);
 		}	
 	}else{
-		puts("SIM");
+		char msg[50];
+		sprintf(msg,"ENVIARPACOTESDADOS %s %s: SIM", nometerm1, nometerm2);
+		EscreveSAIDA(msg);
 		return;
 	}
 	
-	if (c == NULL)
-		printf("NAO");
-	else
-		printf("SIM");
+	if (c == NULL){
+		char msg[50];
+		sprintf(msg,"ENVIARPACOTESDADOS %s %s: NAO", nometerm1, nometerm2);
+		EscreveSAIDA(msg);
+	}else{
+		char msg[50];
+		sprintf(msg,"ENVIARPACOTESDADOS %s %s: SIM", nometerm1, nometerm2);
+		EscreveSAIDA(msg);
+	}
 }
 
 void FrequenciaTerminal (char* localizacao, CelTerm* listaTerm){
@@ -165,7 +172,9 @@ void FrequenciaTerminal (char* localizacao, CelTerm* listaTerm){
 		
 		celT = celT->prox;
 	}
-	printf("Frequencia terminal %s: %d", localizacao, qtdTerm);
+	char msg[50];
+	sprintf(msg,"FREQUENCIATERMINAL %s: %d", localizacao, qtdTerm);
+	EscreveSAIDA(msg);
 }
 
 /* Auxiliares Compartilhados */
@@ -173,7 +182,6 @@ void FrequenciaTerminal (char* localizacao, CelTerm* listaTerm){
 CelTerm* InicializaListaTerm (){
 	
 	CelTerm* listaTerm = NULL;
-	puts("Lista de terminais inicializada");
 	return listaTerm;
 }
 
@@ -188,7 +196,7 @@ CelTerm* BuscaTerminal (char* nomeTerm, CelTerm* listaTerm){
 		
 		celT = celT->prox;
 	}
-	puts("Erro: BuscaTerminal: Terminal nao encontrado");
+	
 	return NULL;
 }
 
@@ -205,11 +213,9 @@ void LiberaListaTerm (CelTerm* listaTerm){
 		free(listaTerm->term);
 		free(listaTerm);
 		
-		puts("Terminal destruido");
 		listaTerm = aux;
 	}
 	free(listaTerm);
-	puts("Lista de terminais destruida");
 }
 
 void DesconectaRoteador (void* celR, CelTerm* listaTerm, void* listaRot){
@@ -221,7 +227,6 @@ void DesconectaRoteador (void* celR, CelTerm* listaTerm, void* listaRot){
 		if(celT->term->rot == celR){
 			
 			celT->term->rot = NULL;
-			printf("Desconectei terminal %s de seu roteador", celT->term->nome);
 		}
 		celT = celT->prox;
 	}
@@ -243,7 +248,37 @@ static Terminal* criaTerminal (char* nomeTerm, char* localizacao){
 	strcpy(t->localizacao, localizacao);
 	t->rot = NULL;
 	
-	puts("Terminal criado");
-	
 	return t;
+}
+
+void EscreveLOG (char* mensagem){
+	FILE *log;
+	log = fopen("log.txt", "a+");
+	
+	if(log == NULL){
+		perror("Erro ao abrir o arquivo log.txt");
+		exit(1);
+	}else{
+		fprintf(log, "%s\n", mensagem);
+		fclose(log);
+	}
+}
+
+void EscreveSAIDA (char* mensagem){
+	FILE *saida;
+	saida = fopen("saida.txt", "a+");
+		
+	if(saida == NULL){
+		perror("Erro ao abrir o arquivo saida.txt");
+		exit(1);
+	}else{
+		fprintf(saida, "%s\n", mensagem);
+		fclose(saida);
+	}
+}
+
+int main (){
+	CelTerm* ls = InicializaListaTerm();
+	EnviarPacotesDados("term1", "term2", ls);
+	return 0;
 }

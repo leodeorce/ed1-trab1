@@ -91,4 +91,7 @@ void LiberaListaTerm (CelTerm* listaTerm);
 */
 void DesconectaRoteador (void* celR, CelTerm* listaTerm, void* listaRot);
 
+void EscreveSAIDA (char* mensagem);
+void EscreveLOG (char* mensagem);
+
 #endif /* TERMINAL_H_ */
