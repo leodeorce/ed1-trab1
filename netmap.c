@@ -75,7 +75,7 @@ static void Leitura (FILE* entrada){
 	
 	printf("\n\n");
 	LiberaListaTerm(listaTerm);		// Libera lista de terminais.
-	free(listaRot);					// Aqui seria LiberaListaRot().
+	LiberaListaRot(listaRot);					// Aqui seria LiberaListaRot().
 }
 
 static CelTerm* ExecutaComando (char** item, CelTerm* listaTerm, LsRot* listaRot){

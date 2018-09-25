@@ -156,6 +156,20 @@ CelRot* BuscaRoteador (char* nomeRot, LsRot* listaRot){
 	return p;
 }
 
+void LiberaListaRot (LsRot* listaRot){
+	CelRot* p = listaRot->prim;
+	CelRot* aux;
+	
+	while(p!=NULL){
+		LiberaTipoRoteador(p->rot);
+		aux = p->prox;
+		free(p);
+		p = aux;
+	}
+	
+	free(listaRot);	
+}
+
 char* retornaNomeRot(CelRot* rot){
 	return rot->rot->nome;
 }
