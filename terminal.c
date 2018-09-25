@@ -276,9 +276,3 @@ void EscreveSAIDA (char* mensagem){
 		fclose(saida);
 	}
 }
-
-int main (){
-	CelTerm* ls = InicializaListaTerm();
-	EnviarPacotesDados("term1", "term2", ls);
-	return 0;
-}
