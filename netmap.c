@@ -191,3 +191,17 @@ static CelTerm* ExecutaComando (char** item, CelTerm* listaTerm, LsRot* listaRot
 	printf("\n");
 	return listaTerm;
 }
+
+void ImprimeNetMap(LsTerm* listaTerm, LsRot* listaRot){
+	FILE *grafo;
+	grafo = fopen("saida.dot", "a+");
+	
+	if(grafo == NULL){
+		perror("Erro ao abrir o arquivo saida.dot");
+		exit(1);
+	}else{
+		fprintf(grafo,"strict graph {\n");
+		//um loop pras listas	
+		fprintf(grafo,"}\n\n");
+	}
+}
