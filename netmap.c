@@ -68,14 +68,11 @@ static void Leitura (FILE* entrada){
 		listaTerm = ExecutaComando(item, listaTerm, listaRot);		// Chama funcao de execucao dos comandos.
 		printf("\n");
 		
-		CelRot* Debug = ImprimeDebug (listaTerm);
-		printf("rot*: %p\n", Debug);
-		
 	}while(1);		// Condicao de parada ja presente no do-while.
 	
 	printf("\n\n");
 	LiberaListaTerm(listaTerm);		// Libera lista de terminais.
-	LiberaListaRot(listaRot);					// Aqui seria LiberaListaRot().
+	LiberaListaRot(listaRot);		// Libera lista de roteadores e suas relacoes
 }
 
 static CelTerm* ExecutaComando (char** item, CelTerm* listaTerm, LsRot* listaRot){
@@ -92,7 +89,7 @@ static CelTerm* ExecutaComando (char** item, CelTerm* listaTerm, LsRot* listaRot
 			if( !strcmp(item[0], "IMPRIMENETMAP")){
 				for(j=0; j<i; j++)						// Debug: para ver se entrou de acordo.
 					printf(" %s", item[j]);
-				//EscreveDOT();
+				//ImprimeNetMap();
 			}
 			break;
 		}
@@ -192,7 +189,7 @@ static CelTerm* ExecutaComando (char** item, CelTerm* listaTerm, LsRot* listaRot
 	return listaTerm;
 }
 
-void ImprimeNetMap(LsTerm* listaTerm, LsRot* listaRot){
+void ImprimeNetMap (void* listaTerm, void* listaRot){
 	FILE *grafo;
 	grafo = fopen("saida.dot", "a+");
 	

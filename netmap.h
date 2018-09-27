@@ -9,20 +9,12 @@
 */
 int CriaNetmap (int argv, char** argc);
 
-/*
-* inputs: 
-* output: 
-* pre-condicao: 
-* pos-condicao: 
+/*Cria arquivo de extensao DOT contendo o netmap em formato legivel pelo pacote de ferramentas GraphViz
+* inputs: lista de terminais e lista de roteadores
+* output: nenhum
+* pre-condicao: listas inicializadas
+* pos-condicao: arquivo saida.dot existe e está preenchido com o netmap recebido
 */
-void EscreveLog (char* mensagem);
-
-/*
-* inputs: 
-* output: 
-* pre-condicao: 
-* pos-condicao: 
-*/
-void EscreveSaida (char* mensagem);
+void ImprimeNetMap (void* listaTerm, void* listaRot);
 
 #endif /* NETMAP_H_ */

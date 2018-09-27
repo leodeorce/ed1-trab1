@@ -108,7 +108,7 @@ void DesconectaRoteadores (char* nomeRot1, char* nomeRot2, LsRot* listaRot){
 	
 	CelRot* celRC = BuscaRoteador(nomeRot2, celNP1->rot->rotConectados); //Encontra o roteador 2 na lista de roteadores conectados do roteador 1
 	if(celRC == NULL){
-		char msg[50];
+		char msg[75];
 		sprintf(msg, "Erro: DesconectaRoteadores: Roteadores %s e %s nao estao conectados", nomeRot1, nomeRot2);
 		EscreveLOG(msg);
 		return;

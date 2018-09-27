@@ -258,10 +258,6 @@ void EscreveSAIDA (char* mensagem){
 	}
 }
 
-CelRot* ImprimeDebug (CelTerm* listaTerm){
-	return listaTerm->term->rot;
-}
-
 /* Auxiliares Exclusivos */
 
 static Terminal* criaTerminal (char* nomeTerm, char* localizacao){
