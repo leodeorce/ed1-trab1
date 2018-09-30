@@ -8,6 +8,7 @@ static Roteador* criaRoteador (char* rot, char* operadora);
 static void EncadeiaRoteador (CelRot* celR, LsRot* listaRot);
 static void DesencadeiaRoteador (CelRot* p, LsRot* listaRot);
 static void LiberaTipoRoteador (Roteador* rot);
+static int BuscaNomeVet (char* nomerot, char vet[][25], int i);
 
 struct celRot{
 	CelRot *prox, *ant;
@@ -108,8 +109,8 @@ void DesconectaRoteadores (char* nomeRot1, char* nomeRot2, LsRot* listaRot){
 	
 	CelRot* celRC = BuscaRoteador(nomeRot2, celNP1->rot->rotConectados); //Encontra o roteador 2 na lista de roteadores conectados do roteador 1
 	if(celRC == NULL){
-		char msg[75];
-		sprintf(msg, "Erro: Roteadores %s e %s nao estao conectados", nomeRot1, nomeRot2);
+		char msg[50];
+		sprintf(msg, "Erro: DesconectaRoteadores: Roteadores %s e %s nao estao conectados", nomeRot1, nomeRot2);
 		EscreveLOG(msg);
 		return;
 	}
@@ -170,20 +171,44 @@ void LiberaListaRot (LsRot* listaRot){
 	free(listaRot);	
 }
 
+int funcaoBusca (CelRot* rot, char* nomerot, char vet[][25], int* i){  //vet armazenará o nome dos roteadores que já passaram pelo loop
+	CelRot* p = rot;
+	
+	while (p!= NULL){
+		if(BuscaNomeVet(p->rot->nome, vet, *i) == 1){ //se o roteador em questao tiver no vet, então passará para o próximo roteador da lista
+			p = p->prox;
+		}else{                                      
+			if(strcmp(p->rot->nome, nomerot) == 0){ //verifica se o roteador é o que está procurando
+				return 1;                          //encontrou o roteador
+			}else{
+				strcpy(vet[*i], p->rot->nome); //guarda o nome do roteador no vet, para não precisar analisar de novo
+				(*i)++;                        // incrementa +1 no contador que indica a primeira posição vazia do vetor 
+				int r = funcaoBusca (p->rot->rotConectados->prim, nomerot, vet, i);  //chamada recursiva da função para verificar, agora, na lista de roteadores conectados do roteador em questao, começando com o primeiro roteador da lista
+				if(r == 1)            //Após buscar na lista de rotconectados ao rot em questao, verifica se o roteador já foi encontrado
+					return 1;
+				else                  //passa para o próximo roteador da lista em questao
+					p = p->prox;			
+			}
+		}
+	}	
+	return 0;                      //Passou pelo loop e não encontrou
+}
+
+static int BuscaNomeVet (char* nomerot, char vet[][25], int i){
+	int j;
+	for(j=0; j<i; j++){
+		if(strcmp(vet[j], nomerot) == 0)
+			return 1;
+	}
+	return 0;
+}
+
 char* retornaNomeRot(CelRot* rot){
 	return rot->rot->nome;
 }
 
-LsRot* retornaRotConectados(CelRot* rot){
-	return rot->rot->rotConectados;
-}
-
-CelRot* retornaPrim (LsRot* listaRot){
-	return listaRot->prim;
-}
-
-CelRot* retornaProxCel (CelRot* celrot){
-	return celrot->prox;
+CelRot* retornaPrimRotCon(CelRot* celrot){
+	return celrot->rot->rotConectados->prim;
 }
 
 /* Auxiliares Exclusivos */

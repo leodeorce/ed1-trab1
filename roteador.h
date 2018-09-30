@@ -70,17 +70,8 @@ LsRot* InicializaListaRot();
 */
 CelRot* BuscaRoteador (char* nomeRot, LsRot* listaRot);
 
-/*Destroi lista de roteadores
-* inputs: lista de roteadores
-* output: nenhum
-* pre-condicao: lista de roteadores inicializada
-* pos-condicao: lista de roteadores destruida
-*/
-void LiberaListaRot (LsRot* listaRot);
-
 char* retornaNomeRot(CelRot* rot);
-LsRot* retornaRotConectados(CelRot* rot);
-CelRot* retornaPrim (LsRot* listaRot);
-CelRot* retornaProxCel (CelRot* celrot);
+CelRot* retornaPrimRotCon(CelRot* celrot);
+int funcaoBusca (CelRot* rot, char* nomerot, char vet[][25], int* i);
 
 #endif /* ROTEADOR_H_ */
