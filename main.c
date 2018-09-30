@@ -13,5 +13,5 @@ int main (int argv, char* argc[])
 	else if(netmap == -2)
 		puts("Erro: Falha ao abrir arquivo");
 	
-	return netmap;
+	return 0;
 }

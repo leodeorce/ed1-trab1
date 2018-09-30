@@ -19,7 +19,6 @@ int CriaNetmap (int argv, char** argc){		// Recebe nome do arquivo como argument
 			
 		else{
 			
-			printf("\n");
 			Leitura(entrada);		// Chama funcao de leitura do arquivo .txt.
 			
 			printf("\n");
@@ -40,8 +39,6 @@ static void Leitura (FILE* entrada){
 	
 	CelTerm* listaTerm = InicializaListaTerm();		// Inicializa ambas as listas.
 	LsRot* listaRot = InicializaListaRot();
-	
-	puts("Lista de roteadores inicializada\n");
 	
 	do{
 		fgets(str, 75, entrada);		// str recebe linha atual do arquivo.
@@ -70,9 +67,9 @@ static void Leitura (FILE* entrada){
 		
 	}while(1);		// Condicao de parada ja presente no do-while.
 	
-	printf("\n\n");
+	printf("\n");
 	LiberaListaTerm(listaTerm);		// Libera lista de terminais.
-	LiberaListaRot(listaRot);		// Libera lista de roteadores e suas relacoes
+	LiberaListaRot(listaRot);		// Libera lista de roteadores e suas relacoes.
 }
 
 static CelTerm* ExecutaComando (char** item, CelTerm* listaTerm, LsRot* listaRot){
@@ -89,7 +86,7 @@ static CelTerm* ExecutaComando (char** item, CelTerm* listaTerm, LsRot* listaRot
 			if( !strcmp(item[0], "IMPRIMENETMAP")){
 				for(j=0; j<i; j++)						// Debug: para ver se entrou de acordo.
 					printf(" %s", item[j]);
-				//ImprimeNetMap();
+				ImprimeNetMap(listaTerm, listaRot);
 			}
 			break;
 		}
@@ -99,35 +96,30 @@ static CelTerm* ExecutaComando (char** item, CelTerm* listaTerm, LsRot* listaRot
 			if( !strcmp(item[0], "REMOVEROTEADOR")){
 				for(j=0; j<i; j++)
 					printf(" %s", item[j]);
-				printf("\n");
 				RemoveRoteador(item[1], listaRot, listaTerm);
 				break;
 			}
 			if( !strcmp(item[0], "REMOVETERMINAL")){
 				for(j=0; j<i; j++)
 					printf(" %s", item[j]);
-				printf("\n");
 				listaTerm = RemoveTerminal(item[1], listaTerm);
 				break;
 			}
 			if( !strcmp(item[0], "DESCONECTATERMINAL")){
 				for(j=0; j<i; j++)
 					printf(" %s", item[j]);
-				printf("\n");
 				DesconectaTerminal(item[1], listaTerm);
 				break;
 			}
 			if( !strcmp(item[0], "FREQUENCIAOPERADORA")){
 				for(j=0; j<i; j++)
 					printf(" %s", item[j]);
-				printf("\n");
 				FrequenciaOperadora(item[1], listaRot);
 				break;
 			}
 			if( !strcmp(item[0], "FREQUENCIATERMINAL")){
 				for(j=0; j<i; j++)
 					printf(" %s", item[j]);
-				printf("\n");
 				FrequenciaTerminal(item[1], listaTerm);
 				break;
 			}
@@ -139,42 +131,36 @@ static CelTerm* ExecutaComando (char** item, CelTerm* listaTerm, LsRot* listaRot
 			if( !strcmp(item[0], "CADASTRAROTEADOR")){
 				for(j=0; j<i; j++)
 					printf(" %s", item[j]);
-				printf("\n");
 				CadastraRoteador(item[1], item[2], listaRot);
 				break;
 			}
 			if( !strcmp(item[0], "CADASTRATERMINAL")){
 				for(j=0; j<i; j++)
 					printf(" %s", item[j]);
-				printf("\n");
 				listaTerm = CadastraTerminal(item[1], item[2], listaTerm);
 				break;
 			}
 			if( !strcmp(item[0], "CONECTAROTEADORES")){
 				for(j=0; j<i; j++)
 					printf(" %s", item[j]);
-				printf("\n");
 				ConectaRoteadores(item[1], item[2], listaRot);
 				break;
 			}
 			if( !strcmp(item[0], "CONECTATERMINAL")){
 				for(j=0; j<i; j++)
 					printf(" %s", item[j]);
-				printf("\n");
 				ConectaTerminal(item[1], item[2], listaTerm, listaRot);
 				break;
 			}
 			if( !strcmp(item[0], "ENVIARPACOTESDADOS")){
 				for(j=0; j<i; j++)
 					printf(" %s", item[j]);
-				printf("\n");
 				EnviarPacotesDados(item[1], item[2], listaTerm);
 				break;
 			}
 			if( !strcmp(item[0], "DESCONECTAROTEADORES")){
 				for(j=0; j<i; j++)
 					printf(" %s", item[j]);
-				printf("\n");
 				DesconectaRoteadores(item[1], item[2], listaRot);
 				break;
 			}
@@ -185,20 +171,27 @@ static CelTerm* ExecutaComando (char** item, CelTerm* listaTerm, LsRot* listaRot
 			break;
 	}
 	
-	printf("\n");
 	return listaTerm;
 }
 
 void ImprimeNetMap (void* listaTerm, void* listaRot){
+	
 	FILE *grafo;
 	grafo = fopen("saida.dot", "a+");
 	
 	if(grafo == NULL){
 		perror("Erro ao abrir o arquivo saida.dot");
 		exit(1);
+		
 	}else{
-		fprintf(grafo,"strict graph {\n");
-		//um loop pras listas	
-		fprintf(grafo,"}\n\n");
+		
+		fprintf(grafo, "strict graph {\n");
+		
+		ImprimeTerm(grafo, listaTerm);
+		ImprimeRot(grafo, listaRot);
+		
+		fprintf(grafo, "}\n");
+		
+		fclose(grafo);
 	}
 }

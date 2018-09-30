@@ -109,22 +109,22 @@ void EnviarPacotesDados (char* nometerm1, char* nometerm2, CelTerm* listaTerm){
 		return;
 	}
 	
-	if (celT1->term->rot != NULL && celT2->term->rot != NULL){ //Verifica se os terminais estão conectados a algum roteador
+	if (celT1->term->rot != NULL && celT2->term->rot != NULL){ //Verifica se os terminais estÃ£o conectados a algum roteador
 		
 		char* rotT1 = retornaNomeRot(celT1->term->rot);
 		char* rotT2 = retornaNomeRot(celT2->term->rot);
 		
-		if (!strcmp(rotT1, rotT2)){                     //Se sim, verifica se é no mesmo roteador
+		if (!strcmp(rotT1, rotT2)){                     //Se sim, verifica se Ã© no mesmo roteador
 			char msg[50];
 			sprintf(msg,"ENVIARPACOTESDADOS %s %s: SIM", nometerm1, nometerm2);
 			EscreveSAIDA(msg);
 			return;
 		}
-												//Se não for,
-		char vet[50][25];                     //Inicializa vetor de strings para auxiliar na função de busca          
-		int i = 0;                            //Funcionará como um indicador da primeira posição vazia do vet
+												//Se nÃ£o for,
+		char vet[50][25];                     //Inicializa vetor de strings para auxiliar na funÃ§Ã£o de busca
+		int i = 0;                            //FuncionarÃ¡ como um indicador da primeira posiÃ§Ã£o vazia do vet
 		
-		int k = funcaoBusca(celT1->term->rot, rotT2, vet, &i);  //Função de busca
+		int k = funcaoBusca(celT1->term->rot, rotT2, vet, &i);  //FunÃ§Ã£o de busca
 		
 		if(k == 1){
 			char msg[50];
@@ -133,10 +133,10 @@ void EnviarPacotesDados (char* nometerm1, char* nometerm2, CelTerm* listaTerm){
 		}else{
 			char msg[50];
 			sprintf(msg,"ENVIARPACOTESDADOS %s %s: NAO", nometerm1, nometerm2);
-			EscreveSAIDA(msg);  
+			EscreveSAIDA(msg);
 		}
 		
-	}else{                                     //O terminal 1 ou o terminal 2 não esta(o) conectado(s) a nenhum roteador
+	}else{                                     //O terminal 1 ou o terminal 2 nÃ£o esta(o) conectado(s) a nenhum roteador
 		char msg[50];
 		sprintf(msg,"ENVIARPACOTESDADOS %s %s: NAO", nometerm1, nometerm2);
 		EscreveSAIDA(msg);
@@ -185,24 +185,6 @@ CelTerm* BuscaTerminal (char* nomeTerm, CelTerm* listaTerm){
 	return NULL;
 }
 
-void LiberaListaTerm (CelTerm* listaTerm){
-	
-	CelTerm* aux;
-	
-	while (listaTerm != NULL){
-		
-		aux = listaTerm->prox;
-		
-		free(listaTerm->term->nome);
-		free(listaTerm->term->localizacao);
-		free(listaTerm->term);
-		free(listaTerm);
-		
-		listaTerm = aux;
-	}
-	free(listaTerm);
-}
-
 void DesconectaRoteador (void* celR, CelTerm* listaTerm, void* listaRot){
 	
 	CelTerm* celT = listaTerm;
@@ -243,6 +225,84 @@ void EscreveSAIDA (char* mensagem){
 	}
 }
 
+void ImprimeTerm (FILE* grafo, CelTerm* listaTerm){
+	
+	CelTerm* aux1 = listaTerm;
+	char mat[100][20];
+	char* nomeRot;
+	int i = 0, nT = 0;
+	int pT[100];
+	
+	while(aux1 != NULL){
+		
+		strcpy(mat[i], aux1->term->nome);
+		pT[nT] = i;
+		
+		if(aux1->term->rot != NULL){
+			
+			nomeRot = retornaNomeRot(aux1->term->rot);
+			strcpy(mat[i+1], nomeRot);
+			i = i + 2;
+			
+		}else
+			i++;
+		
+		nT++;
+		aux1 = aux1->prox;
+	}
+	
+	mat[i][0] = '\0';
+	i--;
+	nT--;
+	
+	while(i >= 0){
+		
+		if(i == pT[nT]){
+			fprintf(grafo, "\t%s;\n", mat[i]);
+			i--;
+			
+		}else{
+			fprintf(grafo, "\t%s -- %s;\n", mat[i-1], mat[i]);
+			i = i - 2;
+		}
+		
+		nT--;
+	}
+	
+	// while(aux != NULL){
+	//
+	// 	fprintf(grafo, "\t%s", aux->term->nome);
+	//
+	// 	if(aux->term->rot != NULL){
+	//
+	// 		nomeRot = retornaNomeRot(aux->term->rot);
+	// 		fprintf(grafo, " -- %s;\n", nomeRot);
+	//
+	// 	}else
+	// 		fprintf(grafo, ";\n");
+	//
+	// 	aux = aux->prox;
+	// }
+}
+
+void LiberaListaTerm (CelTerm* listaTerm){
+	
+	CelTerm* aux;
+	
+	while (listaTerm != NULL){
+		
+		aux = listaTerm->prox;
+		
+		free(listaTerm->term->nome);
+		free(listaTerm->term->localizacao);
+		free(listaTerm->term);
+		free(listaTerm);
+		
+		listaTerm = aux;
+	}
+	free(listaTerm);
+}
+
 /* Auxiliares Exclusivos */
 
 static Terminal* criaTerminal (char* nomeTerm, char* localizacao){
@@ -256,42 +316,4 @@ static Terminal* criaTerminal (char* nomeTerm, char* localizacao){
 	t->rot = NULL;
 	
 	return t;
-}
-
-int main(){
-	LsRot* lsR = InicializaListaRot();
-	CelTerm* lsT = InicializaListaTerm();
-	
-	CadastraRoteador((char*)"rot0",(char*) "a", lsR);
-	CadastraRoteador((char*)"rot1", (char*)"a", lsR);
-	CadastraRoteador((char*)"rot2", (char*)"a", lsR);
-	CadastraRoteador((char*)"rot3", (char*)"a", lsR);
-	CadastraRoteador((char*)"rot4", (char*)"a", lsR);
-	CadastraRoteador((char*)"rot5", (char*)"a", lsR);
-	CadastraRoteador((char*)"rot7", (char*)"a", lsR);
-	CadastraRoteador((char*)"rot8", (char*)"a", lsR);
-	CadastraRoteador((char*)"rot9", (char*)"a", lsR);
-	
-	lsT = CadastraTerminal((char*)"term1", (char*)"a", lsT);
-	lsT = CadastraTerminal((char*)"term2", (char*)"a", lsT);
-	
-	ConectaTerminal((char*)"term1", (char*)"rot0", lsT, lsR);
-	ConectaTerminal((char*)"term2", (char*)"rot7", lsT, lsR);
-	
-	EnviarPacotesDados((char*)"term1", (char*)"term2", lsT);
-	
-	ConectaRoteadores((char*)"rot0", (char*)"rot1", lsR);
-	ConectaRoteadores((char*)"rot0", (char*)"rot3", lsR);
-	ConectaRoteadores((char*)"rot0", (char*)"rot5", lsR);
-	ConectaRoteadores((char*)"rot1", (char*)"rot3", lsR);
-	ConectaRoteadores((char*)"rot1", (char*)"rot4", lsR);
-	ConectaRoteadores((char*)"rot3", (char*)"rot8", lsR);
-	ConectaRoteadores((char*)"rot8", (char*)"rot2", lsR);
-	ConectaRoteadores((char*)"rot2", (char*)"rot9", lsR);
-	ConectaRoteadores((char*)"rot2", (char*)"rot7", lsR);
-	
-	EnviarPacotesDados((char*)"term1", (char*)"term3", lsT);	
-	EnviarPacotesDados((char*)"term1", (char*)"term2", lsT);
-	
-	return 0;
 }

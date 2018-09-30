@@ -13,7 +13,7 @@ typedef struct celTerm CelTerm;
 * inputs: nome do terminal e localizacao
 * output: lista de terminais
 * pre-condicao: terminal existe
-* pos-condicao: terminal inserido no netmap 
+* pos-condicao: terminal inserido no netmap
 */
 CelTerm* CadastraTerminal (char* nomeTerm, char* localizacao, CelTerm* listaTerm);
 
@@ -75,14 +75,6 @@ CelTerm* InicializaListaTerm ();
 */
 CelTerm* BuscaTerminal (char* nomeTerm, CelTerm* listaTerm);
 
-/*Destroi lista de terminais
-* inputs: lista de terminais
-* output: nenhum
-* pre-condicao: lista de terminais inicializada
-* pos-condicao: lista de terminais destruida
-*/
-void LiberaListaTerm (CelTerm* listaTerm);
-
 /*Desconecta roteador cuja celula e passada dos terminais da lista de terminais
 * inputs: celula do roteador e lista onde procurar
 * output: nenhum
@@ -91,7 +83,36 @@ void LiberaListaTerm (CelTerm* listaTerm);
 */
 void DesconectaRoteador (void* celR, CelTerm* listaTerm, void* listaRot);
 
+/*
+* inputs:
+* output:
+* pre-condicao:
+* pos-condicao:
+*/
 void EscreveSAIDA (char* mensagem);
+
+/*
+* inputs:
+* output:
+* pre-condicao:
+* pos-condicao:
+*/
 void EscreveLOG (char* mensagem);
+
+/*
+* inputs:
+* output:
+* pre-condicao:
+* pos-condicao:
+*/
+void ImprimeTerm (FILE* grafo, CelTerm* listaTerm);
+
+/*Destroi lista de terminais
+* inputs: lista de terminais
+* output: nenhum
+* pre-condicao: lista de terminais inicializada
+* pos-condicao: lista de terminais destruida
+*/
+void LiberaListaTerm (CelTerm* listaTerm);
 
 #endif /* TERMINAL_H_ */

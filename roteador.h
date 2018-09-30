@@ -16,7 +16,7 @@ typedef struct lsRot LsRot;
 * inputs: nome do roteador e da operadora e ponteiro pra lista de roteadores
 * output: nenhum
 * pre-condicao: roteador existe
-* pos-condicao: roteador inserido no netmap 
+* pos-condicao: roteador inserido no netmap
 */
 void CadastraRoteador (char* rot, char* operadora, LsRot* listaRot);
 
@@ -24,7 +24,7 @@ void CadastraRoteador (char* rot, char* operadora, LsRot* listaRot);
 * inputs: nome do roteador e o ponteiro pra lista de roteadores
 * output: nenhum
 * pre-condicao: roteador existe
-* pos-condicao: roteador removido do netmap 
+* pos-condicao: roteador removido do netmap
 */
 void RemoveRoteador (char* nomeRot, LsRot* listaRot, void* listaTerm);
 
@@ -70,7 +70,37 @@ LsRot* InicializaListaRot();
 */
 CelRot* BuscaRoteador (char* nomeRot, LsRot* listaRot);
 
-char* retornaNomeRot(CelRot* rot);
+/*Percorre o netmap partindo de um roteador atraves de suas conexoes buscando caminho para um roteador especifico
+* inputs: celula do roteador de partida, nome do roteador a ser alcancado, vetor guardando historico de busca e inteiro
+guardando a primeira posicao vazia do vetor
+* output: 1 caso encontre um caminho para nomerot, 0 caso contrario
+* pre-condicao: celula nao nula
+* pos-condicao: netmap inalterado
+*/
 int funcaoBusca (CelRot* rot, char* nomerot, char vet[][25], int* i);
+
+/*Retorna nome do roteador referenciado na celula recebida
+* inputs: celula do roteador em qualquer lista de roteadores
+* output: nome do roteador
+* pre-condicao: celula nao nula
+* pos-condicao: nenhum
+*/
+char* retornaNomeRot(CelRot* rot);
+
+/*
+* inputs:
+* output:
+* pre-condicao:
+* pos-condicao:
+*/
+void ImprimeRot (FILE* grafo, LsRot* listaRot);
+
+/*Destroi lista de roteadores
+* inputs: lista de roteadores
+* output: nenhum
+* pre-condicao: lista de roteadores inicializada
+* pos-condicao: lista de roteadores destruida
+*/
+void LiberaListaRot (LsRot* listaRot);
 
 #endif /* ROTEADOR_H_ */
