@@ -172,7 +172,7 @@ void LiberaListaRot (LsRot* listaRot){
 }
 
 int funcaoBusca (CelRot* rot, char* nomerot, char vet[][25], int* i){  //vet armazenará o nome dos roteadores que já passaram pelo loop
-	CelRot* p = rot;
+	CelRot* p = rot->rot->rotConectados->prim;   //primeiro roteador da lista de roteadores conectados do roteador de entrada
 	
 	while (p!= NULL){
 		if(BuscaNomeVet(p->rot->nome, vet, *i) == 1){ //se o roteador em questao tiver no vet, então passará para o próximo roteador da lista
@@ -183,7 +183,7 @@ int funcaoBusca (CelRot* rot, char* nomerot, char vet[][25], int* i){  //vet arm
 			}else{
 				strcpy(vet[*i], p->rot->nome); //guarda o nome do roteador no vet, para não precisar analisar de novo
 				(*i)++;                        // incrementa +1 no contador que indica a primeira posição vazia do vetor 
-				int r = funcaoBusca (p->rot->rotConectados->prim, nomerot, vet, i);  //chamada recursiva da função para verificar, agora, na lista de roteadores conectados do roteador em questao, começando com o primeiro roteador da lista
+				int r = funcaoBusca (p, nomerot, vet, i);  //chamada recursiva da função
 				if(r == 1)            //Após buscar na lista de rotconectados ao rot em questao, verifica se o roteador já foi encontrado
 					return 1;
 				else                  //passa para o próximo roteador da lista em questao
@@ -205,10 +205,6 @@ static int BuscaNomeVet (char* nomerot, char vet[][25], int i){
 
 char* retornaNomeRot(CelRot* rot){
 	return rot->rot->nome;
-}
-
-CelRot* retornaPrimRotCon(CelRot* celrot){
-	return celrot->rot->rotConectados->prim;
 }
 
 /* Auxiliares Exclusivos */

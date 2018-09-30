@@ -71,7 +71,6 @@ LsRot* InicializaListaRot();
 CelRot* BuscaRoteador (char* nomeRot, LsRot* listaRot);
 
 char* retornaNomeRot(CelRot* rot);
-CelRot* retornaPrimRotCon(CelRot* celrot);
 int funcaoBusca (CelRot* rot, char* nomerot, char vet[][25], int* i);
 
 #endif /* ROTEADOR_H_ */

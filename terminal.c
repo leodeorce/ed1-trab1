@@ -101,7 +101,7 @@ void EnviarPacotesDados (char* nometerm1, char* nometerm2, CelTerm* listaTerm){
 		return;
 	}
 	
-	CelTerm* celT2 = BuscaTerminal(nometerm2, listaTerm); //Busca terminal1 na lista de terminais do netmap
+	CelTerm* celT2 = BuscaTerminal(nometerm2, listaTerm); //Busca terminal2 na lista de terminais do netmap
 	if (celT2 == NULL){
 		char msg[50];
 		sprintf(msg,"Erro: Terminal %s nao existe no NetMap", nometerm2);
@@ -124,7 +124,7 @@ void EnviarPacotesDados (char* nometerm1, char* nometerm2, CelTerm* listaTerm){
 		char vet[50][25];                     //Inicializa vetor de strings para auxiliar na função de busca          
 		int i = 0;                            //Funcionará como um indicador da primeira posição vazia do vet
 		
-		int k = funcaoBusca(retornaPrimRotCon(celT1->term->rot), rotT2, vet, &i);  //Função de busca na lista de roteadores conectados ao roteador do terminal 1, iniciando com o primeiro roteador da lista
+		int k = funcaoBusca(celT1->term->rot, rotT2, vet, &i);  //Função de busca
 		
 		if(k == 1){
 			char msg[50];
