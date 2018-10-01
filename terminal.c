@@ -22,11 +22,11 @@ struct celTerm{
 CelTerm* CadastraTerminal (char* nomeTerm, char* localizacao, CelTerm* listaTerm){
 	
 	CelTerm* celT = (CelTerm*) malloc(sizeof(CelTerm));
-	Terminal* t = criaTerminal(nomeTerm, localizacao);
+	Terminal* t = criaTerminal(nomeTerm, localizacao);		// Cria tipo item de terminal.
 	
-	celT->term = t;
+	celT->term = t;				// Celula alocada aponta para tipo item.
 	celT->prox = listaTerm;
-	listaTerm = celT;
+	listaTerm = celT;			// Celula deve ser primeira da lista.
 	
 	return listaTerm;
 }
@@ -37,21 +37,21 @@ CelTerm* RemoveTerminal (char* nomeTerm, CelTerm* listaTerm){
 	CelTerm* auxProx = listaTerm;
 	CelTerm* auxAnt;
 	
-	while(auxProx != NULL && auxProx != celT){
+	while(auxProx != NULL && auxProx != celT){		// Anda pela lista ate encontrar celula desejada ou fim.
 		auxAnt = auxProx;
 		auxProx = auxProx->prox;
 	}
 	
-	if(auxProx == NULL){
+	if(auxProx == NULL){		// Caso nao ache celula desejada imprime mensagem de erro em log.txt.
 		char msg[50];
 		sprintf(msg,"Erro: Terminal %s nao existe no NetMap", nomeTerm);
 		EscreveLOG(msg);
 		return NULL;
 	}
 	
-	if(auxProx == listaTerm)
+	if(auxProx == listaTerm)			// Procedimento caso a celula desejada for a primeira da lista.
 		listaTerm = listaTerm->prox;
-	else
+	else								// Procedimento caso nao seja.
 		auxAnt->prox = auxProx->prox;
 	
 	free (auxProx->term->nome);
@@ -66,7 +66,7 @@ void ConectaTerminal (char* nomeTerm, char* nomeRot, CelTerm* listaTerm, void* l
 	
 	CelTerm* celT = BuscaTerminal(nomeTerm, listaTerm);
 	
-	if(celT == NULL){
+	if(celT == NULL){		// Caso nao ache terminal desejado imprime mensagem de erro em log.txt.
 		char msg[50];
 		sprintf(msg,"Erro: Terminal %s nao existe no NetMap", nomeTerm);
 		EscreveLOG(msg);
@@ -74,6 +74,14 @@ void ConectaTerminal (char* nomeTerm, char* nomeRot, CelTerm* listaTerm, void* l
 	}
 	
 	CelRot* celR = BuscaRoteador(nomeRot, listaRot);
+	
+	if(celR == NULL){		// Caso nao ache roteador desejado imprime mensagem de erro em log.txt.
+		char msg[50];
+		sprintf(msg,"Erro: Roteador %s nao existe no NetMap", nomeRot);
+		EscreveLOG(msg);
+		return;
+	}
+	
 	celT->term->rot = celR;
 }
 
@@ -81,14 +89,14 @@ void DesconectaTerminal (char* nomeTerm, CelTerm* listaTerm){
 	
 	CelTerm* celT = BuscaTerminal(nomeTerm, listaTerm);
 	
-	if(celT == NULL){
+	if(celT == NULL){		// Caso nao ache terminal desejado imprime mensagem de erro em log.txt.
 		char msg[50];
 		sprintf(msg,"Erro: Terminal %s nao existe no NetMap", nomeTerm);
 		EscreveLOG(msg);
 		return;
 		
 	}else
-		celT->term->rot = NULL;
+		celT->term->rot = NULL;		// Desconecta terminal de seu roteador.
 }
 
 void EnviarPacotesDados (char* nometerm1, char* nometerm2, CelTerm* listaTerm){
@@ -150,16 +158,17 @@ void FrequenciaTerminal (char* localizacao, CelTerm* listaTerm){
 	int qtdTerm = 0;
 	CelTerm* celT = listaTerm;
 	
-	while(celT != NULL){
+	while(celT != NULL){		// Anda pela lista com variavel auxiliar.
 		
-		if(!strcmp(celT->term->localizacao, localizacao))
+		if(!strcmp(celT->term->localizacao, localizacao))		// Conta +1 para cada terminal correspondente.
 			qtdTerm++;
 		
 		celT = celT->prox;
 	}
+	
 	char msg[50];
 	sprintf(msg,"FREQUENCIATERMINAL %s: %d", localizacao, qtdTerm);
-	EscreveSAIDA(msg);
+	EscreveSAIDA(msg);													// Imprime em saida.txt o resultado.
 }
 
 /* Auxiliares Compartilhados */
@@ -174,25 +183,25 @@ CelTerm* BuscaTerminal (char* nomeTerm, CelTerm* listaTerm){
 	
 	CelTerm* celT = listaTerm;
 	
-	while(celT != NULL){
+	while(celT != NULL){		// Anda pela lista com variavel auxiliar.
 		
-		if(!strcmp(celT->term->nome, nomeTerm))
+		if(!strcmp(celT->term->nome, nomeTerm))		// Retorna a celula cujo terminal bater com o nome especificado.
 			return celT;
 		
 		celT = celT->prox;
 	}
 	
-	return NULL;
+	return NULL;		// Retorna NULL caso nao encontre.
 }
 
 void DesconectaRoteador (void* celR, CelTerm* listaTerm, void* listaRot){
 	
 	CelTerm* celT = listaTerm;
 	
-	while(celT != NULL){
+	while(celT != NULL){		// Anda pela lista de terminais com variável auxiliar.
 		
-		if(celT->term->rot == celR){
-			
+		if(celT->term->rot == celR){		// Caso o terminal esteja conectado ao roteador especificado,
+											// desconecta o terminal.
 			celT->term->rot = NULL;
 		}
 		celT = celT->prox;
@@ -201,73 +210,75 @@ void DesconectaRoteador (void* celR, CelTerm* listaTerm, void* listaRot){
 
 void EscreveLOG (char* mensagem){
 	FILE *log;
-	log = fopen("log.txt", "a+");
+	log = fopen("log.txt", "a+");			// Abre ou cria log.txt apontando para o final do arquivo.
 	
-	if(log == NULL){
+	if(log == NULL){						// Exibe mensagem de erro caso falha.
 		perror("Erro ao abrir o arquivo log.txt");
 		exit(1);
 	}else{
-		fprintf(log, "%s\n", mensagem);
+		fprintf(log, "%s\n", mensagem);		// Escreve mensagem em log.txt.
 		fclose(log);
 	}
 }
 
 void EscreveSAIDA (char* mensagem){
 	FILE *saida;
-	saida = fopen("saida.txt", "a+");
+	saida = fopen("saida.txt", "a+");		// Abre ou cria saida.txt apontando para o final do arquivo.
 		
-	if(saida == NULL){
+	if(saida == NULL){						// Exibe mensagem de erro caso falha.
 		perror("Erro ao abrir o arquivo saida.txt");
 		exit(1);
 	}else{
-		fprintf(saida, "%s\n", mensagem);
+		fprintf(saida, "%s\n", mensagem);	// Escreve mensagem em saida.txt.
 		fclose(saida);
 	}
 }
 
 void ImprimeTerm (FILE* grafo, CelTerm* listaTerm){
 	
-	CelTerm* aux1 = listaTerm;
-	char mat[100][20];
+	CelTerm* aux1 = listaTerm;		// aux1 percorre a lista para preencher mat.
+	char mat[100][20];				// mat guarda tanto nomes de terminais quanto roteadores relacionados.
 	char* nomeRot;
-	int i = 0, nT = 0;
-	int pT[100];
+	int i = 0, nT = 0;				// nT guarda a quantidade de itens em pT.
+	int pT[100];					// pT guarda os indices de mat que contem terminais.
 	
 	while(aux1 != NULL){
 		
-		strcpy(mat[i], aux1->term->nome);
-		pT[nT] = i;
+		strcpy(mat[i], aux1->term->nome);		// Guarda o nome do terminal em mat.
+		pT[nT] = i;								// Guarda o indice desse terminal em mat.
 		
-		if(aux1->term->rot != NULL){
+		if(aux1->term->rot != NULL){			// Entra caso terminal esteja conectado a algum roteador.
 			
 			nomeRot = retornaNomeRot(aux1->term->rot);
-			strcpy(mat[i+1], nomeRot);
-			i = i + 2;
+			strcpy(mat[i+1], nomeRot);			// Guarda nome do roteador em mat, logo apos seu terminal.
+			i = i + 2;							// i recebe a proxima posicao vazia.
 			
 		}else
-			i++;
+			i++;				// Caso terminal desconectado, avanca para o proximo.
 		
-		nT++;
+		nT++;					// Avanca a posicao onde guardar indices no vetor pT.
 		aux1 = aux1->prox;
 	}
 	
 	mat[i][0] = '\0';
-	i--;
-	nT--;
+	i--;						// i agora eh a ultima posicao preenchida em mat.
+	nT--;						// nT agora eh a ultima posicao preenchida em pT.
 	
 	while(i >= 0){
 		
-		if(i == pT[nT]){
-			fprintf(grafo, "\t%s;\n", mat[i]);
+		if(i == pT[nT]){						// Se a posicao em mat for a de um terminal, eh garantido que esse
+			fprintf(grafo, "\t%s;\n", mat[i]);	// nao esta conectado a um roteador.
 			i--;
 			
-		}else{
+		}else{								// Se a posicao em mat for roteador, escreve seu nome e o de seu terminal.
 			fprintf(grafo, "\t%s -- %s;\n", mat[i-1], mat[i]);
 			i = i - 2;
 		}
 		
 		nT--;
 	}
+	
+	/* Retirar antes da versao final */
 	
 	// while(aux != NULL){
 	//
@@ -289,9 +300,9 @@ void LiberaListaTerm (CelTerm* listaTerm){
 	
 	CelTerm* aux;
 	
-	while (listaTerm != NULL){
+	while (listaTerm != NULL){		// Anda pela lista com seu proprio ponteiro.
 		
-		aux = listaTerm->prox;
+		aux = listaTerm->prox;		// Guarda a proxima celula ou NULL.
 		
 		free(listaTerm->term->nome);
 		free(listaTerm->term->localizacao);
@@ -300,6 +311,7 @@ void LiberaListaTerm (CelTerm* listaTerm){
 		
 		listaTerm = aux;
 	}
+	
 	free(listaTerm);
 }
 
@@ -307,13 +319,13 @@ void LiberaListaTerm (CelTerm* listaTerm){
 
 static Terminal* criaTerminal (char* nomeTerm, char* localizacao){
 	
-	Terminal* t = (Terminal*) malloc(sizeof(Terminal));
-	t->nome = (char*) malloc(((strlen(nomeTerm))+1)*sizeof(char));
-	t->localizacao = (char*) malloc(((strlen(localizacao))+1)*sizeof(char));
+	Terminal* itemT = (Terminal*) malloc(sizeof(Terminal));
+	itemT->nome = (char*) malloc(((strlen(nomeTerm)) + 1) * sizeof(char));
+	itemT->localizacao = (char*) malloc(((strlen(localizacao)) + 1) * sizeof(char));
 	
-	strcpy(t->nome, nomeTerm);
-	strcpy(t->localizacao, localizacao);
-	t->rot = NULL;
+	strcpy(itemT->nome, nomeTerm);
+	strcpy(itemT->localizacao, localizacao);
+	itemT->rot = NULL;						// Terminal inicialmente desconectado.
 	
-	return t;
+	return itemT;
 }

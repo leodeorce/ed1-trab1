@@ -52,8 +52,8 @@ static void Leitura (FILE* entrada){
 		i = 0;
 		do{
 			i++;
-			item[i] = strtok(NULL, " ");		// [1] item[i] recebe caracteres de str a partir do
-		}while(item[i] != NULL);				// [2] ultimo strtok ate espaco ou fim de linha.
+			item[i] = strtok(NULL, " ");		// item[i] recebe caracteres de str a partir do ultimo strtok
+		}while(item[i] != NULL);				// ate espaco ou fim de linha.
 		
 		aux = strlen(item[i-1]);				// aux recebe a posicao de '\0' no ultimo item lido.
 
@@ -177,21 +177,21 @@ static CelTerm* ExecutaComando (char** item, CelTerm* listaTerm, LsRot* listaRot
 void ImprimeNetMap (void* listaTerm, void* listaRot){
 	
 	FILE *grafo;
-	grafo = fopen("saida.dot", "a+");
+	grafo = fopen("saida.dot", "a+");		// Abre ou cria saida.dot apontando para o final do arquivo.
 	
-	if(grafo == NULL){
+	if(grafo == NULL){			// Exibe mensagem de erro caso falha.
 		perror("Erro ao abrir o arquivo saida.dot");
 		exit(1);
 		
 	}else{
 		
-		fprintf(grafo, "strict graph {\n");
+		fprintf(grafo, "strict graph {\n");		// Inicia linguagem dot.
 		
-		ImprimeTerm(grafo, listaTerm);
+		ImprimeTerm(grafo, listaTerm);			// Funcoes que facilitam a escrita dos elementos do netmap.
 		ImprimeRot(grafo, listaRot);
 		
-		fprintf(grafo, "}\n");
+		fprintf(grafo, "}\n");					// Finaliza linguagem dot.
 		
-		fclose(grafo);
+		fclose(grafo);		// Fecha saida.dot.
 	}
 }
