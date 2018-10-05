@@ -40,7 +40,7 @@ void RemoveRoteador (char* nomeRot, LsRot* listaRot, void* listaTerm){
 	
 	if(p == NULL){
 		char msg[50];
-		sprintf(msg,"Erro: Roteador %s nao existe no NetMap", nomeRot);
+		sprintf(msg,"Erro: Roteador %s inexistente no NetMap", nomeRot);
 		EscreveLOG(msg);
 		return;
 	}
@@ -66,7 +66,7 @@ void ConectaRoteadores (char* nomeRot1, char* nomeRot2, LsRot* listaRot){
 	CelRot* c = BuscaRoteador(nomeRot1, listaRot);  //busca o roteador 1 no netmap
 	if(c == NULL){
 		char msg[50];
-		sprintf(msg,"Erro: Roteador %s nao existe no NetMap", nomeRot1);
+		sprintf(msg,"Erro: Roteador %s inexistente no NetMap", nomeRot1);
 		EscreveLOG(msg);
 		return;
 	}
@@ -75,7 +75,7 @@ void ConectaRoteadores (char* nomeRot1, char* nomeRot2, LsRot* listaRot){
 	c = BuscaRoteador(nomeRot2, listaRot); //busca o roteador 2 no netmap
 	if(c == NULL){
 		char msg[50];
-		sprintf(msg, "Erro: Roteador %s nao existe no NetMap", nomeRot2);
+		sprintf(msg, "Erro: Roteador %s inexistente no NetMap", nomeRot2);
 		EscreveLOG(msg);
 		return;
 	}
@@ -95,14 +95,14 @@ void DesconectaRoteadores (char* nomeRot1, char* nomeRot2, LsRot* listaRot){
 	CelRot* celNP1 = BuscaRoteador(nomeRot1, listaRot);  //Encontra o roteador 1 no netmap
 	if(celNP1 == NULL){
 		char msg[50];
-		sprintf(msg, "Erro: Roteador %s nao existe no NetMap", nomeRot1);
+		sprintf(msg, "Erro: Roteador %s inexistente no NetMap", nomeRot1);
 		EscreveLOG(msg);
 		return;
 	}
 	CelRot* celNP2 = BuscaRoteador(nomeRot2, listaRot); //Encontra o roteador 2 no netmap
 	if(celNP2 == NULL){
 		char msg[50];
-		sprintf(msg,"Erro: Roteador %s nao existe no NetMap", nomeRot2);
+		sprintf(msg,"Erro: Roteador %s inexistente no NetMap", nomeRot2);
 		EscreveLOG(msg);
 		return;
 	}
@@ -134,7 +134,7 @@ void FrequenciaOperadora (char* operadora, LsRot* listaRot){
 		p = p->prox;
 	}
 	char msg[50];
-	sprintf(msg, "FREQUENCIAOPERADORA %s %d", operadora, qtdRot);
+	sprintf(msg, "FREQUENCIAOPERADORA %s: %d", operadora, qtdRot);
 	EscreveSAIDA(msg);
 }
 

@@ -6,7 +6,7 @@
 #include "terminal.h"
 
 static void Leitura (FILE* entrada);
-static CelTerm* ExecutaComando (char** item, CelTerm* listaTerm, LsRot* listaRot);
+static CelTerm* ExecutaComando (char** item, int i, CelTerm* listaTerm, LsRot* listaRot);
 
 int CriaNetmap (int argv, char** argc){		// Recebe nome do arquivo como argumento.
 	
@@ -20,8 +20,6 @@ int CriaNetmap (int argv, char** argc){		// Recebe nome do arquivo como argument
 		else{
 			
 			Leitura(entrada);		// Chama funcao de leitura do arquivo .txt.
-			
-			printf("\n");
 			fclose(entrada);		// Fecha o arquivo.
 			return 0;
 		}
@@ -32,94 +30,93 @@ int CriaNetmap (int argv, char** argc){		// Recebe nome do arquivo como argument
 
 static void Leitura (FILE* entrada){
 	
-	int 		i, aux;
-	int 		k = 0;			// Debug.
-	char		str[75];		// Declara string auxiliar de leitura do arquivo.
-	char*		item[4];		// Declara mattriz de ponteiros que resgata itens lidos.
+	int 	i, aux;
+	char	str[75];		// Declara string auxiliar de leitura do arquivo.
+	char	*item[4];		// Declara mattriz de ponteiros que resgata itens lidos.
+	char	*auxR, *auxN;
 	
 	CelTerm* listaTerm = InicializaListaTerm();		// Inicializa ambas as listas.
 	LsRot* listaRot = InicializaListaRot();
 	
 	do{
-		fgets(str, 75, entrada);		// str recebe linha atual do arquivo.
-		item[0] = strtok(str, " ");		// item[0] recebe caracteres ate o primeiro espaco ou fim de linha.
+		fgets(str, 75, entrada);			// str recebe linha atual do arquivo.
 		
-		printf("Linha: %d", ++k);	    // Debug: numero da linha comecando em 1.
-
-		if(item == NULL || memcmp(item[0], "FIM", 3) == 0)	    // Condicao de parada.
-			break;                        						// Se FIM for lido, encerra.
+		item[0] = strtok(str, " ");			// item[0] recebe caracteres ate o primeiro espaco ou fim de linha.
+		
+		if(item[0] == NULL || memcmp(item[0], "FIM", 3) == 0)	    // Condicao de parada.
+			break;                        							// Se FIM for lido, encerra.
 		
 		i = 0;
-		do{
+		
+		while( strchr(item[i], '\n') == NULL ){
+			
 			i++;
+			
 			item[i] = strtok(NULL, " ");		// item[i] recebe caracteres de str a partir do ultimo strtok
-		}while(item[i] != NULL);				// ate espaco ou fim de linha.
 		
-		aux = strlen(item[i-1]);				// aux recebe a posicao de '\0' no ultimo item lido.
-
-		if(strchr(item[i-1], '\r') != NULL)	    // Verifica se tem '\r' nesse item.
-			item[i-1][aux-2] = '\0';			// Se sim, remove '\r' e '\n'.
-		else
-			item[i-1][aux-1] = '\0';			// Se nao, remove somente '\n'.
+			if( i == 2)
+				break;
+		}
 		
-		listaTerm = ExecutaComando(item, listaTerm, listaRot);		// Chama funcao de execucao dos comandos.
-		printf("\n");
+		auxR = strchr(item[i], '\r');		// Verifica se ultimo item lido tem '\r'.
+		auxN = strchr(item[i], '\n');		// Verifica se ultimo item lido tem '\n'.
+		
+		if( auxR != NULL ){					// Assumindo que, se '\r' existir, '\n' tambem existe.
+			
+			aux = strcspn( item[i], "\r" );		// Se tem '\r', finaliza item[i] na posicao anterior.
+			item[i][aux] = '\0';
+			
+		}else if( auxN != NULL ){
+			
+			aux = strcspn( item[i], "\n" );		// Se tem '\n', finaliza item[i] na posicao anterior.
+			item[i][aux] = '\0';
+			
+		}
+		
+		aux = strlen( item[i] );		// Caso existam espaco(s) apos o ultimo argumento em uma linha qualquer
+		if( aux == 0 )					// no arquivo de entrada, este(s) ocupa(m) item[i] e sao retirados aqui.
+			i--;
+		
+		i++;		// i agora guarda a quantidade de argumentos na matriz item.
+		
+		listaTerm = ExecutaComando(item, i, listaTerm, listaRot);		// Chama funcao de execucao dos comandos.
 		
 	}while(1);		// Condicao de parada ja presente no do-while.
-	
-	printf("\n");
+
 	LiberaListaTerm(listaTerm);		// Libera lista de terminais.
 	LiberaListaRot(listaRot);		// Libera lista de roteadores e suas relacoes.
 }
 
-static CelTerm* ExecutaComando (char** item, CelTerm* listaTerm, LsRot* listaRot){
+static CelTerm* ExecutaComando (char** item, int i, CelTerm* listaTerm, LsRot* listaRot){
 	
-	int j, i = 0;
-	
-	while(item[i] != NULL)
-		i++;
-	
-	switch(i){			// O valor de i diz a quantidade de itens lidos.
+	switch(i){		// Aproveita a informacao de quantos argumentos foram lidos.
 
 		case 1:			// Comandos sem parametros passados do arquivo.
 		{
-			if( !strcmp(item[0], "IMPRIMENETMAP")){
-				for(j=0; j<i; j++)						// Debug: para ver se entrou de acordo.
-					printf(" %s", item[j]);
+			if( !strcmp(item[0], "IMPRIMENETMAP"))
 				ImprimeNetMap(listaTerm, listaRot);
-			}
 			break;
 		}
 
 		case 2:			// Comandos com 1 parametro passado do arquivo.
 		{
 			if( !strcmp(item[0], "REMOVEROTEADOR")){
-				for(j=0; j<i; j++)
-					printf(" %s", item[j]);
 				RemoveRoteador(item[1], listaRot, listaTerm);
 				break;
 			}
 			if( !strcmp(item[0], "REMOVETERMINAL")){
-				for(j=0; j<i; j++)
-					printf(" %s", item[j]);
 				listaTerm = RemoveTerminal(item[1], listaTerm);
 				break;
 			}
 			if( !strcmp(item[0], "DESCONECTATERMINAL")){
-				for(j=0; j<i; j++)
-					printf(" %s", item[j]);
 				DesconectaTerminal(item[1], listaTerm);
 				break;
 			}
 			if( !strcmp(item[0], "FREQUENCIAOPERADORA")){
-				for(j=0; j<i; j++)
-					printf(" %s", item[j]);
 				FrequenciaOperadora(item[1], listaRot);
 				break;
 			}
 			if( !strcmp(item[0], "FREQUENCIATERMINAL")){
-				for(j=0; j<i; j++)
-					printf(" %s", item[j]);
 				FrequenciaTerminal(item[1], listaTerm);
 				break;
 			}
@@ -129,38 +126,26 @@ static CelTerm* ExecutaComando (char** item, CelTerm* listaTerm, LsRot* listaRot
 		case 3:			// Comandos com 2 parametros passados do arquivo.
 		{
 			if( !strcmp(item[0], "CADASTRAROTEADOR")){
-				for(j=0; j<i; j++)
-					printf(" %s", item[j]);
 				CadastraRoteador(item[1], item[2], listaRot);
 				break;
 			}
 			if( !strcmp(item[0], "CADASTRATERMINAL")){
-				for(j=0; j<i; j++)
-					printf(" %s", item[j]);
 				listaTerm = CadastraTerminal(item[1], item[2], listaTerm);
 				break;
 			}
 			if( !strcmp(item[0], "CONECTAROTEADORES")){
-				for(j=0; j<i; j++)
-					printf(" %s", item[j]);
 				ConectaRoteadores(item[1], item[2], listaRot);
 				break;
 			}
 			if( !strcmp(item[0], "CONECTATERMINAL")){
-				for(j=0; j<i; j++)
-					printf(" %s", item[j]);
 				ConectaTerminal(item[1], item[2], listaTerm, listaRot);
 				break;
 			}
 			if( !strcmp(item[0], "ENVIARPACOTESDADOS")){
-				for(j=0; j<i; j++)
-					printf(" %s", item[j]);
 				EnviarPacotesDados(item[1], item[2], listaTerm);
 				break;
 			}
 			if( !strcmp(item[0], "DESCONECTAROTEADORES")){
-				for(j=0; j<i; j++)
-					printf(" %s", item[j]);
 				DesconectaRoteadores(item[1], item[2], listaRot);
 				break;
 			}
