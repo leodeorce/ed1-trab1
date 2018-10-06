@@ -45,15 +45,11 @@ void RemoveRoteador (char* nomeRot, LsRot* listaRot, void* listaTerm){
 		return;
 	}
 	
-	CelRot* pConec;
-	
 	CelRot* prc = p->rot->rotConectados->prim;  //celula do primeiro roteador da lista de rot conectados
 	
-	while(prc != NULL){
-		pConec = BuscaRoteador(nomeRot, prc->rot->rotConectados);  //busca a celula onde o roteador esta
-		DesencadeiaRoteador(pConec, prc->rot->rotConectados); //Desencadeia da lista de roteadores conectados os quais faz parte
-		free(pConec);
-		prc = prc->prox;
+	while(prc != NULL){                        //Desconecta o roteador dos roteadores em que esta conectado
+		DesconectaRoteadores(prc->rot->nome, p->rot->nome, listaRot); 
+		prc = p->rot->rotConectados->prim;
 	}
 	
 	DesconectaRoteador(p, listaTerm, listaRot);		//Desconecta roteador de todos terminais
