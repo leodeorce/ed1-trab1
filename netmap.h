@@ -7,7 +7,7 @@
 * pre-condicao: arquivo de entrada com formatacao correta
 * pos-condicao: funcoes executadas e arquivos de saida criados de acordo
 */
-int CriaNetmap (int argv, char** argc);
+void CriaNetmap (int argv, char** argc);
 
 /*Cria arquivo de extensao DOT contendo o netmap em formato legivel pelo pacote de ferramentas GraphViz
 * inputs: lista de terminais e lista de roteadores

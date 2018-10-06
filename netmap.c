@@ -8,24 +8,23 @@
 static void Leitura (FILE* entrada);
 static CelTerm* ExecutaComando (char** item, int i, CelTerm* listaTerm, LsRot* listaRot);
 
-int CriaNetmap (int argv, char** argc){		// Recebe nome do arquivo como argumento.
+void CriaNetmap (int argv, char** argc){		// Recebe nome do arquivo como argumento.
 	
 	if(argv > 1){							// Verifica se houve argumento passado.
 
 		FILE* entrada = fopen(argc[1], "r");	// Abre arquivo de entrada em modo leitura.
 
-		if(entrada == 0)				// Verifica se houve falha ao abrir arquivo.
-			return -2;
-			
-		else{
+		if(entrada != 0){
 			
 			Leitura(entrada);		// Chama funcao de leitura do arquivo .txt.
 			fclose(entrada);		// Fecha o arquivo.
-			return 0;
+			return;
 		}
 	}
-	else
-		return -1;
+	
+	char msg[75];
+	sprintf(msg, "Erro: I/O, nao foi possivel abrir o arquivo “entrada.txt”");
+	EscreveLOG(msg);
 }
 
 static void Leitura (FILE* entrada){

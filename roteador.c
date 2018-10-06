@@ -48,6 +48,7 @@ void RemoveRoteador (char* nomeRot, LsRot* listaRot, void* listaTerm){
 	CelRot* prc = p->rot->rotConectados->prim;  //celula do primeiro roteador da lista de rot conectados
 	
 	while(prc != NULL){                        //Desconecta o roteador dos roteadores em que esta conectado
+
 		DesconectaRoteadores(prc->rot->nome, p->rot->nome, listaRot); 
 		prc = p->rot->rotConectados->prim;
 	}
@@ -188,6 +189,9 @@ void ImprimeRot (FILE* grafo, LsRot* listaRot){
 	while(aux1 != NULL){
 		
 		aux2 = aux1->rot->rotConectados->prim;
+		
+		if(aux2 == NULL)
+			fprintf(grafo, "\t%s;\n", aux1->rot->nome);
 		
 		while(aux2 != NULL){
 		
