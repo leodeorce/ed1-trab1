@@ -127,22 +127,22 @@ void EnviarPacotesDados (char* nometerm1, char* nometerm2, CelTerm* listaTerm){
 		return;
 	}
 	
-	if (celT1->term->rot != NULL && celT2->term->rot != NULL){ //Verifica se os terminais estão conectados a algum roteador
+	if (celT1->term->rot != NULL && celT2->term->rot != NULL){ //Verifica se os terminais estao conectados a algum roteador
 		
 		char* rotT1 = retornaNomeRot(celT1->term->rot);
 		char* rotT2 = retornaNomeRot(celT2->term->rot);
 		
-		if (!strcmp(rotT1, rotT2)){                     //Se sim, verifica se é no mesmo roteador
+		if (!strcmp(rotT1, rotT2)){                     //Se sim, verifica se eh no mesmo roteador
 			char msg[50];
 			sprintf(msg,"ENVIARPACOTESDADOS %s %s: SIM", nometerm1, nometerm2);
 			EscreveSAIDA(msg);
 			return;
 		}
-												//Se não for,
-		char vet[50][25];                     //Inicializa vetor de strings para auxiliar na função de busca
-		int i = 0;                            //Funcionará como um indicador da primeira posição vazia do vet
+												//Se nao for,
+		char vet[100][25];                     //Inicializa vetor de strings para auxiliar na funcao de busca
+		int i = 0;                            //Funcionara como um indicador da primeira posicao vazia do vet
 		
-		int k = funcaoBusca(celT1->term->rot, rotT2, vet, &i);  //Função de busca
+		int k = funcaoBusca(celT1->term->rot, rotT2, vet, &i);  //Funcao de busca
 		
 		if(k == 1){
 			char msg[50];
@@ -154,7 +154,7 @@ void EnviarPacotesDados (char* nometerm1, char* nometerm2, CelTerm* listaTerm){
 			EscreveSAIDA(msg);
 		}
 		
-	}else{                                     //O terminal 1 ou o terminal 2 não esta(o) conectado(s) a nenhum roteador
+	}else{                                     //O terminal 1 ou o terminal 2 nao esta(o) conectado(s) a nenhum roteador
 		char msg[50];
 		sprintf(msg,"ENVIARPACOTESDADOS %s %s: NAO", nometerm1, nometerm2);
 		EscreveSAIDA(msg);
@@ -208,7 +208,7 @@ void DesconectaRoteador (void* celR, CelTerm* listaTerm, void* listaRot){
 	
 	CelTerm* celT = listaTerm;
 	
-	while(celT != NULL){		// Anda pela lista de terminais com variável auxiliar.
+	while(celT != NULL){		// Anda pela lista de terminais com variavel auxiliar.
 		
 		if(celT->term->rot == celR){		// Caso o terminal esteja conectado ao roteador especificado,
 											// desconecta o terminal.
@@ -245,52 +245,6 @@ void EscreveSAIDA (char* mensagem){
 }
 
 void ImprimeTerm (FILE* grafo, CelTerm* listaTerm){
-	
-	/* Cadastra no inicio */
-	
-	// CelTerm* aux1 = listaTerm;		// aux1 percorre a lista para preencher mat.
-	// char mat[100][20];				// mat guarda tanto nomes de terminais quanto roteadores relacionados.
-	// char* nomeRot;
-	// int i = 0, nT = 0;				// nT guarda a quantidade de itens em pT.
-	// int pT[100];					// pT guarda os indices de mat que contem terminais.
-	
-	// while(aux1 != NULL){
-	//
-	// 	strcpy(mat[i], aux1->term->nome);		// Guarda o nome do terminal em mat.
-	// 	pT[nT] = i;								// Guarda o indice desse terminal em mat.
-	//
-	// 	if(aux1->term->rot != NULL){			// Entra caso terminal esteja conectado a algum roteador.
-	//
-	// 		nomeRot = retornaNomeRot(aux1->term->rot);
-	// 		strcpy(mat[i+1], nomeRot);			// Guarda nome do roteador em mat, logo apos seu terminal.
-	// 		i = i + 2;							// i recebe a proxima posicao vazia.
-	//
-	// 	}else
-	// 		i++;				// Caso terminal desconectado, avanca para o proximo.
-	//
-	// 	nT++;					// Avanca a posicao onde guardar indices no vetor pT.
-	// 	aux1 = aux1->prox;
-	// }
-	//
-	// mat[i][0] = '\0';
-	// i--;						// i agora eh a ultima posicao preenchida em mat.
-	// nT--;						// nT agora eh a ultima posicao preenchida em pT.
-	//
-	// while(i >= 0){
-	//
-	// 	if(i == pT[nT]){						// Se a posicao em mat for a de um terminal, eh garantido que esse
-	// 		fprintf(grafo, "\t%s;\n", mat[i]);	// nao esta conectado a um roteador.
-	// 		i--;
-	//
-	// 	}else{								// Se a posicao em mat for roteador, escreve seu nome e o de seu terminal.
-	// 		fprintf(grafo, "\t%s -- %s;\n", mat[i-1], mat[i]);
-	// 		i = i - 2;
-	// 	}
-	//
-	// 	nT--;
-	// }
-	
-	/* Cadastra no fim */
 	
 	CelTerm* aux = listaTerm;
 	char* nomeRot;

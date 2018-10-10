@@ -83,35 +83,35 @@ CelTerm* BuscaTerminal (char* nomeTerm, CelTerm* listaTerm);
 */
 void DesconectaRoteador (void* celR, CelTerm* listaTerm, void* listaRot);
 
-/*
-* inputs:
-* output:
-* pre-condicao:
-* pos-condicao:
+/*Imprime mensagem recebida em arquivo "saida.txt"
+* inputs: mensagem a imprimir
+* output: nenhum
+* pre-condicao: nenhum
+* pos-condicao: mensagem impressa
 */
 void EscreveSAIDA (char* mensagem);
 
-/*
-* inputs:
-* output:
-* pre-condicao:
-* pos-condicao:
+/*Imprime mensagem recebida em arquivo "log.txt"
+* inputs: mensagem a imprimir
+* output: nenhum
+* pre-condicao: nenhum
+* pos-condicao: mensagem impressa
 */
 void EscreveLOG (char* mensagem);
 
-/*
-* inputs:
-* output:
-* pre-condicao:
-* pos-condicao:
+/*Imprime terminais e suas conexoes em linguagem DOT em arquivo "saida.dot"
+* inputs: ponteiro para arquivo aberto e lista de terminais
+* output: nenhum
+* pre-condicao: lista inicializada
+* pos-condicao: terminais e suas conexoes impressos (caso existam)
 */
 void ImprimeTerm (FILE* grafo, CelTerm* listaTerm);
 
-/*Destroi lista de terminais
+/*Destroi lista de terminais e estruturas tipo terminal
 * inputs: lista de terminais
 * output: nenhum
 * pre-condicao: lista de terminais inicializada
-* pos-condicao: lista de terminais destruida
+* pos-condicao: lista de terminais e estruturas tipo terminal destruidas
 */
 void LiberaListaTerm (CelTerm* listaTerm);
 

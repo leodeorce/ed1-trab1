@@ -154,27 +154,27 @@ CelRot* BuscaRoteador (char* nomeRot, LsRot* listaRot){
 	return p;
 }
 
-int funcaoBusca (CelRot* rot, char* nomerot, char vet[][25], int* i){  //vet armazenará o nome dos roteadores que já passaram pelo loop
+int funcaoBusca (CelRot* rot, char* nomerot, char vet[][25], int* i){  //vet armazenara o nome dos roteadores que ja passaram pelo loop
 	CelRot* p = rot->rot->rotConectados->prim;   //primeiro roteador da lista de roteadores conectados do roteador de entrada
 	
 	while (p!= NULL){
-		if(BuscaNomeVet(p->rot->nome, vet, *i) == 1){ //se o roteador em questao tiver no vet, então passará para o próximo roteador da lista
+		if(BuscaNomeVet(p->rot->nome, vet, *i) == 1){ //se o roteador em questao tiver no vet, então passara para o proximo roteador da lista
 			p = p->prox;
 		}else{
-			if(strcmp(p->rot->nome, nomerot) == 0){ //verifica se o roteador é o que está procurando
+			if(strcmp(p->rot->nome, nomerot) == 0){ //verifica se o roteador eh o que esta procurando
 				return 1;                          //encontrou o roteador
 			}else{
-				strcpy(vet[*i], p->rot->nome); //guarda o nome do roteador no vet, para não precisar analisar de novo
-				(*i)++;                        // incrementa +1 no contador que indica a primeira posição vazia do vetor
+				strcpy(vet[*i], p->rot->nome); //guarda o nome do roteador no vet, para nao precisar analisar de novo
+				(*i)++;                        // incrementa +1 no contador que indica a primeira posicao vazia do vetor
 				int r = funcaoBusca (p, nomerot, vet, i);  //chamada recursiva da função
-				if(r == 1)            //Após buscar na lista de rotconectados ao rot em questao, verifica se o roteador já foi encontrado
+				if(r == 1)            //Apos buscar na lista de rotconectados ao rot em questao, verifica se o roteador ja foi encontrado
 					return 1;
-				else                  //passa para o próximo roteador da lista em questao
+				else                  //passa para o proximo roteador da lista em questao
 					p = p->prox;
 			}
 		}
 	}
-	return 0;                      //Passou pelo loop e não encontrou
+	return 0;                      //Passou pelo loop e nao encontrou
 }
 
 char* retornaNomeRot(CelRot* rot){

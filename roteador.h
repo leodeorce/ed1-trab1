@@ -87,19 +87,19 @@ int funcaoBusca (CelRot* rot, char* nomerot, char vet[][25], int* i);
 */
 char* retornaNomeRot(CelRot* rot);
 
-/*
-* inputs:
-* output:
-* pre-condicao:
-* pos-condicao:
+/*Imprime roteadores e seus enlaces em linguagem DOT em arquivo saida.dot
+* inputs: ponteiro para arquivo aberto e lista de roteadores
+* output: nenhum
+* pre-condicao: lista inicializada
+* pos-condicao: roteadores e seus enlaces impressos (caso existam)
 */
 void ImprimeRot (FILE* grafo, LsRot* listaRot);
 
-/*Destroi lista de roteadores
+/*Destroi lista de roteadores e estruturas tipo roteador
 * inputs: lista de roteadores
 * output: nenhum
 * pre-condicao: lista de roteadores inicializada
-* pos-condicao: lista de roteadores destruida
+* pos-condicao: lista de roteadores e estruturas tipo roteador destruidos
 */
 void LiberaListaRot (LsRot* listaRot);
 
